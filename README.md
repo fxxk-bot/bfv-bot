@@ -339,4 +339,18 @@ https://github.com/fxxk-bot/bfv-bot/releases
 
 `./bfv-bot /bfv/config.yaml`
 
+
+
+### 启动成功
+
+控制台
+
+![示例](/doc/8.png)
+
+qq消息
+
+![示例](/doc/9.png)
+
+
+
 随时删库, 暂不开源
