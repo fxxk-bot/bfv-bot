@@ -261,8 +261,82 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 
 
+## napcat配置
+
+### 一键脚本
+
+https://napneko.github.io/zh-CN/guide/getting-started#%E4%B8%80%E9%94%AE%E6%92%B8%E7%8C%AB
+
+不要选择docker安装, 配置和升级比较麻烦
+
+### json配置
+
+安装完启动完后, 可以在这个地方找到配置
+
+`/opt/QQ/resources/app/app_launcher/napcat/config`
+
+修改onebot11_[qq].json 配置
+
+1. http.enable=true
+2. http.port 端口必须与bfv-bot的配置一致
+3. http.enablePost=true
+4. http.postUrls改为bfv-bot的访问路径
+
+```json
+{
+    "http": {
+        "enable": true,
+        "host": "",
+        "port": 3001,
+        "secret": "",
+        "enableHeart": false,
+        "enablePost": true,
+        "postUrls": ["http://192.168.93.1:19997/api/event/post"] 
+    },
+    "ws": {
+        "enable": false,
+        "host": "",
+        "port": 3001
+    },
+    "reverseWs": {
+        "enable": false,
+        "urls": []
+    },
+    "GroupLocalTime": {
+        "Record": false,
+        "RecordList": []
+    },
+    "debug": false,
+    "heartInterval": 30000,
+    "messagePostFormat": "array",
+    "enableLocalFile2Url": true,
+    "musicSignUrl": "",
+    "reportSelfMessage": false,
+    "token": ""
+}
+```
+
+正常的话就能看见控制台日志
+
+```
+Log":true,"fileLogLevel":"debug","consoleLogLevel":"info"}
+2024-10-07 01:47:56 [WARN] () | [Native] Error: Native Not Init
+2024-10-07 01:47:56 [INFO] () | [Notice] [OneBot11]
+    HTTP服务 已启动, :3001
+    HTTP上报服务 已启动, 上报地址: http://192.168.93.1:19997/api/event/post
+    WebSocket服务 未启动, :3001
+    WebSocket反向服务 未启动, 反向地址:
+2024-10-07 01:47:56 [INFO] () | [OneBot] [HTTP Server Adapter] Start On Port 3001
+```
+
+
+
 ## 程序下载
 
 https://github.com/fxxk-bot/bfv-bot/releases
 
-暂不开源
+配置文件路径是绝对路径
+
+`./bfv-bot /bfv/config.yaml`
+
+随时删库, 暂不开源
