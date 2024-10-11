@@ -320,6 +320,7 @@ https://napneko.github.io/zh-CN/guide/getting-started#%E4%B8%80%E9%94%AE%E6%92%B
     "token": ""
 }
 ```
+改完后 重启`napcat`
 
 正常的话就能看见控制台日志
 
