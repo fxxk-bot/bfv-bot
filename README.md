@@ -282,7 +282,7 @@ https://napneko.github.io/zh-CN/guide/getting-started#%E4%B8%80%E9%94%AE%E6%92%B
 
 修改onebot11_[机器人qq号].json 配置
 
-1. http.enable=true
+1. http.enable=true  (必须为true, 否则部分功能会失效)
 2. http.port 端口必须与bfv-bot的配置一致 (比如napcat中http.port的配置是3001, napcat的http.host一般情况可以不填. 那么bot的qq-bot.address的配置就得是: http://<napcat的ip>:3001)
 3. http.enablePost=true
 4. http.postUrls改为bfv-bot的访问路径 (比如bfv-bot的server.port为19997, 那么postUrl就需要是http://<bfvbot的ip>:19997/api/event/post)
