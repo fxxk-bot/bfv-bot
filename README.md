@@ -354,6 +354,8 @@ https://github.com/fxxk-bot/bfv-bot/releases
 
 qq消息
 
+如果程序启动, qq没有接收到信息, 说明napcat地址的配置有问题
+
 ![示例](/doc/9.png)
 
 
