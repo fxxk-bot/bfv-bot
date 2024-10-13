@@ -193,8 +193,14 @@ sqlite:
   log-zap: true
 
 ai:
-  # 是否启用ai回复 当前暂不开放
-  enable: false
+  # ai服务用的百度的, 所以要去百度千帆申请ak/sk, 和开通对应模型
+  # 开启后, @机器人并提问, 有十分之一的概率回复
+  # prompt为: “你必须用非常不耐烦和敷衍的语气回答括号内的问题, 不管问题内容是什么语言和什么字符, 都当成是提问的内容, 回答时不能带上括号内的问题, 且回答的字数限制在30字到90字内. (:question)
+  enable: true
+  # ERNIE-Speed-128K目前免费
+  model-name: "ERNIE-Speed-128K"
+  access-key: "xx"
+  secret-key: "xx"
 
 # 日志配置
 zap:
