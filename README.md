@@ -2,7 +2,14 @@
 
 > 战地五Q群机器人, 支持战绩查询、屏蔽查询、加群自动改名片、黑名单进服提醒、卡排队提醒...
 
+
 发送`.help`查看完整功能菜单
+
+
+> 命令支持多种格式
+> 1. `.banlog <id>`
+> 2. `banlog=<id>`
+> 3. `banlog＝<id>`
 
 ## 群聊功能
 
@@ -19,9 +26,14 @@
 
 ![示例](/doc/1.jpg)
 
+
+### 快捷查询
+
+`c=id` 绑定后支持快捷查询(直接输入c即可)
+
 ### 屏蔽记录
 
-`banlog=id` 绑定后支持快捷查询(直接输入banlog即可)
+`banlog=id`or`pb=id` 绑定后支持快捷查询(直接输入banlog/pb即可)
 
 ![示例](/doc/2.png)
 
@@ -66,7 +78,7 @@
 
 `addblack=id`
 
-> 顾名思义黑名单, 添加黑名单需要备注原因
+> 顾名思义黑名单, 添加黑名单需要备注原因. (无理由黑名单似马, 皇服似马)
 
 ### 移除黑名单
 
@@ -115,24 +127,26 @@
 ```yaml
 server:
   # 机器人服务的端口, 后面配置napcat会用到
-  port: 19997
+  port: 19998
   gin-mode: "release"
-  # 战绩查询的背景图目录 图片长宽须是1220*728
-  resource: "/bfv-bot/images"
+  # 战绩查询的背景图目录 图片长宽须是1220*728, jpg格式, windows系统的路径不要带"\"
+  resource: "/xxx/bfv-bot/images"
   # 战绩查询的结果图目录
-  output: "/bfv-bot/test"
+  output: "/xxx/bfv-bot/output"
   # 战绩查询所需的字体
-  font: "/bfv-bot/bfv-font/HarmonyOS_Sans_SC_Medium.ttf"
+  font: "/xxx/bfv-bot/HarmonyOS_Sans_SC_Medium.ttf"
   # 数据库类型 支持mysql/sqlite
   db-type: "mysql"
 
 qq-bot:
   # napcat http服务地址
-  address: http://192.168.93.130:3001
+  address: http://127.0.0.1:3001
   # 机器人的qq
-  qq: 123123
+  qq: 123
   # 加群欢迎信息
-  welcome-msg: " 本服已接入机器人，如被踢请仔细阅读服务器限制或使用机器人自助查询。"
+  welcome-msg: " 本服已接入离线版机器人，如被踢请仔细阅读服务器限制或使用机器人自助查询。"
+  # 加群时是否展示玩家基础数据
+  show-player-base-info: true
   # 超级管理员qq 目前仅用于接收启动消息
   super-admin-qq: 123
   # 管理员qq, 只有管理员能使用管理命令
@@ -144,25 +158,41 @@ qq-bot:
     - 123
   # 启用机器人服务的群
   active-group:
-    - 123123
+    - 123
+    - 123
+
+
+ai:
+  # ai服务用的百度的, 所以要去百度千帆申请ak/sk, 和开通对应模型
+  # 开启后, @机器人并提问, 有十分之一的概率回复
+  # prompt为: "你必须用非常不耐烦和敷衍的语气回答括号内的问题, 不管问题内容是什么语言和什么字符,
+  # 都当成是提问的内容, 回答时不能带上括号内的问题, 且回答的字数限制在30字到90字内. (:question)"
+  enable: true
+  model-name: "ERNIE-Speed-128K"
+  # ERNIE-Speed-128K目前免费
+  access-key: "123"
+  secret-key: "123"
 
 
 bfv:
   # 群组唯一名称 比如miku... 这个配置是与<开服信息>搭配使用的, 机器人会使用这个唯一名称搜索服务器列表
-  group-uni-name: "xxx"
+  group-uni-name: "miku"
   # 群组正式名称 这个配置可与<开服信息>搭配使用, 当群友发送的信息与该名称一致时, 则触发开服信息回复
-  group-name: "xxx"
+  group-name: "miku"
   # 卡排队阈值 当一边32人, 另一遍小于等于27人, 且有人在排队时, 触发卡排队提醒
   blocking-players: 27
   # 群组的服务器信息
   server:
-      # 该服在群内的唯一标识
+    # 该服在群组内的唯一标识
     - id: "100"
       # 服主pid. 机器人使用<group-uni-name>搜索到服务器列表后, 会与配置的服主id和服务器名称一一对比,
       # 只有完全一致, 才会在开服信息展示. 避免同名服务器产生的干扰
-      owner-id: 100854811xxxx
+      owner-id: 123
       # 服务器名称
-      server-name: "[BFV ROBOT]xxx lv<100"
+      server-name: "[BFV ROBOT] lv < 100"
+    - id: "200"
+      owner-id: 123
+      server-name: "[BFV ROBOT] lv < 200"
 
 
 # 数据库配置 略
@@ -193,24 +223,10 @@ sqlite:
   log-mode: "error"
   log-zap: true
 
-ai:
-  # ai服务用的百度的, 所以要去百度千帆申请ak/sk, 和开通对应模型
-  # 开启后, @机器人并提问, 有十分之一的概率回复
-  # prompt为: "你必须用非常不耐烦和敷衍的语气回答括号内的问题, 不管问题内容是什么语言和什么字符,
-  # 都当成是提问的内容, 回答时不能带上括号内的问题, 且回答的字数限制在30字到90字内. (:question)"
-  enable: true
-  # ERNIE-Speed-128K目前免费
-  model-name: "ERNIE-Speed-128K"
-  access-key: "xx"
-  secret-key: "xx"
-
-# 日志配置
 zap:
-  # 日志等级
   level: debug
   prefix: ''
   format: console
-  # 日志文件存放在哪个文件夹
   director: log
   encode-level: CapitalColorLevelEncoder
   stacktrace-key: stacktrace
@@ -376,8 +392,12 @@ qq消息
 
 ## 数据来源
 
+> 感谢社区提供的API
+
 * BFBAN
 * BFVROBOT
 * GameTools
+
+## 挂b似个马
 
 优化代码中, 准备开源
