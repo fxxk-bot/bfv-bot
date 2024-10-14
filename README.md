@@ -227,15 +227,21 @@ sqlite:
   log-mode: "error"
   log-zap: true
 
+# 日志配置
 zap:
+  # 日志等级 debug/info/error 提issue务必开启debug
   level: debug
   prefix: ''
   format: console
+  # 日志目录
   director: log
   encode-level: CapitalColorLevelEncoder
   stacktrace-key: stacktrace
+  # 日志保留天数
   max-age: 2
+  # 提issue时 务必开启
   show-line: true
+  # 是否打印到控制台
   log-in-console: true
 ```
 
