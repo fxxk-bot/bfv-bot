@@ -12,6 +12,7 @@
 > 1. `.banlog <id>`
 > 2. `banlog=<id>`
 > 3. `banlog＝<id>`
+> 4. `banlog`
 
 ## 群聊功能
 
