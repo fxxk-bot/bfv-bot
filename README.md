@@ -370,8 +370,14 @@ qq消息
 
 如果程序启动, qq没有接收到信息, 说明napcat地址的配置有问题
 
+
 ![示例](/doc/9.png)
 
 
+## 数据来源
+
+* BFBAN
+* BFVROBOT
+* GameTools
 
 优化代码中, 准备开源
