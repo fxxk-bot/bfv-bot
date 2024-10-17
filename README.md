@@ -79,6 +79,10 @@
 
 > 私聊机器人触发命令
 
+### 服务器自动喊话
+
+> 基于小电视的`/chat`命令, 需要先登录好账号, 然后机器人定时发送消息给小电视
+
 ### 绑定GameId
 
 `bindgameid=9428214840516`
@@ -148,7 +152,7 @@ server:
   # 机器人服务的端口, 后面配置napcat会用到
   port: 19998
   gin-mode: "release"
-  # 战绩查询的背景图目录 图片长宽须是1220*728, jpg格式, windows系统的路径不要带"\", 图片文件名从0开始, 例如0.jpg/1.jpg/2.jpg
+  # 战绩查询的背景图目录 图片长宽须是1220*728, jpg格式, windows系统的路径不要带"\"
   resource: "/xxx/bfv-bot/images"
   # 战绩查询的结果图目录
   output: "/xxx/bfv-bot/output"
@@ -196,7 +200,6 @@ qq-bot:
       - 123
       - 123
   # 自定义命令名称 一个命令支持多种自定义名称
-  # 不填就是关闭这个命令
   custom-command-key:
     # 战绩查询命令
     cx:
@@ -221,6 +224,15 @@ qq-bot:
     group-server:
       - "开服了吗"
       - "查服"
+  # 小电视喊话功能 需要先登录好 临时功能
+  bot-bot:
+    enable: true
+    # 小电视bot的qq号
+    bot-qq: 3889013937
+    # 喊话间隔 单位: 秒
+    interval: 120
+    # 喊话内容
+    msg: "服务器QQ群: xxxxx"
 
 ai:
   # ai服务用的百度的, 所以要去百度千帆申请ak/sk, 和开通对应模型
