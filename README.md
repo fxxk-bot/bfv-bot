@@ -1,6 +1,6 @@
 # BFV-BOT
 
-> 战地五Q群机器人, 支持战绩查询、屏蔽查询、加群自动改名片、黑名单进服提醒、卡排队提醒、自动宵禁...
+> 战地五Q群机器人, 支持战绩查询、屏蔽查询、加群自动改名片、黑名单进服提醒、卡排队提醒、自动宵禁、自定义命令名称...
 >
 > 程序本身不带任何项目/群组标识, 可任意使用/分发.
 
@@ -42,7 +42,7 @@
 
 ### 屏蔽记录
 
-`banlog=id`or`pb=id` 绑定后支持快捷查询(直接输入banlog/pb即可)
+`banlog=id` 绑定后支持快捷查询(直接输入banlog即可)
 
 ![示例](/doc/2.png)
 
@@ -193,7 +193,23 @@ qq-bot:
     active-group:
       - 123
       - 123
-
+  # 自定义命令名称 一个命令支持多种自定义名称
+  custom-command-key:
+    cx:
+      - "cx"
+    c:
+      - "c"
+    platoon:
+      - "platoon"
+    banlog:
+      - "banlog"
+    bind:
+      - "bind"
+    help:
+      - ".help"
+    group-server:
+      - "开服了吗"
+      - "查服"
 
 ai:
   # ai服务用的百度的, 所以要去百度千帆申请ak/sk, 和开通对应模型
@@ -258,7 +274,7 @@ sqlite:
 
 # 日志配置
 zap:
-  # 日志等级 debug/info/error 提issue务必设置debug
+  # 日志等级 debug/info/error 提issue务必开启debug
   level: debug
   prefix: ''
   format: console
