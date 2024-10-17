@@ -148,7 +148,7 @@ server:
   # 机器人服务的端口, 后面配置napcat会用到
   port: 19998
   gin-mode: "release"
-  # 战绩查询的背景图目录 图片长宽须是1220*728, jpg格式, windows系统的路径不要带"\"
+  # 战绩查询的背景图目录 图片长宽须是1220*728, jpg格式, windows系统的路径不要带"\", 图片文件名从0开始, 例如0.jpg/1.jpg/2.jpg
   resource: "/xxx/bfv-bot/images"
   # 战绩查询的结果图目录
   output: "/xxx/bfv-bot/output"
