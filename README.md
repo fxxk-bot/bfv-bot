@@ -195,18 +195,26 @@ qq-bot:
       - 123
   # 自定义命令名称 一个命令支持多种自定义名称
   custom-command-key:
+    # 战绩查询命令
     cx:
       - "cx"
+    # 基础数据查询
     c:
       - "c"
+    # 玩家加入的战排
     platoon:
       - "platoon"
+    # 屏蔽记录
     banlog:
       - "banlog"
+      - "pb"
+    # 将qq号与ea id绑定
     bind:
       - "bind"
+    # 机器人帮助信息
     help:
       - ".help"
+    # 查询群组服务器
     group-server:
       - "开服了吗"
       - "查服"
