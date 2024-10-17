@@ -232,7 +232,7 @@ qq-bot:
     # 喊话间隔 单位: 秒
     interval: 120
     # 喊话内容
-    msg: "服务器QQ群: xxxxx"
+    msg: "/chat 服务器QQ群: xxxxx"
 
 ai:
   # ai服务用的百度的, 所以要去百度千帆申请ak/sk, 和开通对应模型
