@@ -97,6 +97,12 @@
 >
 > url中9428214840516就是gameid
 
+#### 自动绑定GameId
+
+> 通过配置项`qq-bot.enable-auto-bind-gameid: true`启用
+>
+> 检测到服务器开启会自动绑定上GameId, 关服就进行清空
+
 ### 添加黑名单
 
 `addblack=id`
@@ -234,7 +240,9 @@ qq-bot:
     # 喊话间隔 单位: 秒
     interval: 120
     # 喊话内容
-    msg: "/chat 服务器QQ群: xxxxx"
+    msg: "服务器QQ群: xxxxx"
+  # 启用自动绑定GameId
+  enable-auto-bind-gameid: true
 
 ai:
   # ai服务用的百度的, 所以要去百度千帆申请ak/sk, 和开通对应模型
