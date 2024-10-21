@@ -12,9 +12,10 @@
 
 > 命令支持多种格式
 > 1. `.banlog <id>`
-> 2. `banlog=<id>`
-> 3. `banlog＝<id>`
-> 4. `banlog`
+> 2. `/banlog <id>`
+> 3. `banlog=<id>`
+> 4. `banlog＝<id>`
+> 5. `banlog`
 
 ## 群聊功能
 
@@ -59,6 +60,11 @@
 ![示例](/doc/7.png)
 
 
+### 搜索服务器
+
+> `server=miku`
+>
+> 以文字形式返回搜索到的服务器信息
 
 
 ### 自动修改群名片
@@ -84,6 +90,10 @@
 ### 服务器自动喊话 (临时功能)
 
 > 基于小电视的`/chat`命令, 需要先登录好账号, 然后机器人定时发送消息给小电视. 需要保持游戏内在线. 局内或观战都行
+>
+> 开始喊话: `op=start-broadcast`
+>
+> 停止喊话: `op=stop-broadcast`
 
 ### 绑定GameId
 
@@ -232,9 +242,11 @@ qq-bot:
     group-server:
       - "开服了吗"
       - "查服"
+    # 搜索服务器
+    server:
+      - "server"
   # 小电视喊话功能 需要先登录好 临时功能
   bot-bot:
-    enable: true
     # 小电视bot的qq号
     bot-qq: 3889013937
     # 喊话间隔 单位: 秒
