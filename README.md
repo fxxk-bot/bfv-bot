@@ -397,9 +397,10 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 ## napcat配置
 
-### 一键脚本
+### 安装
 
-https://napneko.github.io/zh-CN/guide/getting-started#%E4%B8%80%E9%94%AE%E6%92%B8%E7%8C%AB
+https://napneko.com/guide/start-install
+
 
 不要选择docker安装, 配置和升级比较麻烦
 
