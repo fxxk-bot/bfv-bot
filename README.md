@@ -176,8 +176,8 @@ server:
   output: "/xxx/bfv-bot/output"
   # 战绩查询所需的字体
   font: "/xxx/bfv-bot/HarmonyOS_Sans_SC_Medium.ttf"
-  # 数据库类型 支持mysql/sqlite
-  db-type: "mysql"
+  # 数据库类型 支持mysql/sqlite sqlite不需要安装单独安装数据库
+  db-type: "sqlite"
 
 qq-bot:
   # napcat http服务地址
