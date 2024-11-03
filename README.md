@@ -32,6 +32,15 @@
 
 ![示例](/doc/1.jpg)
 
+### 完整数据查询
+
+`data=id` 绑定后支持快捷查询(直接输入data即可)
+
+![示例](/doc/10.png)
+
+依赖一个html模板 -> [示例](/doc/template/data.html)
+
+下载后, 配置文件里需要指定这个文件的路径
 
 ### 快捷查询
 
@@ -64,7 +73,7 @@
 
 > `server=miku`
 >
-> 以文字形式返回搜索到的服务器信息
+> 暂以文字形式返回搜索到的服务器信息
 
 
 ### 自动修改群名片
@@ -176,12 +185,16 @@ server:
   output: "/xxx/bfv-bot/output"
   # 战绩查询所需的字体
   font: "/xxx/bfv-bot/HarmonyOS_Sans_SC_Medium.ttf"
-  # 数据库类型 支持mysql/sqlite sqlite不需要安装单独安装数据库
-  db-type: "sqlite"
+  # 相关模板路径
+  template:
+    # 完整数据模板路径
+    data: "/xxx/bfv-bot/template/data.html"
+  # 数据库类型 支持mysql/sqlite
+  db-type: "mysql"
 
 qq-bot:
   # napcat http服务地址
-  address: http://127.0.0.1:3001
+  address: http://127.0.0.1:3000
   # 机器人的qq
   qq: 123
   # 加群欢迎信息
@@ -245,6 +258,8 @@ qq-bot:
     # 搜索服务器
     server:
       - "server"
+    data:
+      - "data"
   # 小电视喊话功能 需要先登录好 临时功能
   bot-bot:
     # 小电视bot的qq号
@@ -253,8 +268,10 @@ qq-bot:
     interval: 120
     # 喊话内容
     msg: "服务器QQ群: xxxxx"
-  # 启用自动绑定GameId
-  enable-auto-bind-gameid: true
+  # 是否启用自动绑定GameId 默认不启用
+  enable-auto-bind-gameid: false
+  # 是否启用自动踢出错误id的群员 默认启用
+  enable-auto-kick-error-nickname: true
 
 ai:
   # ai服务用的百度的, 所以要去百度千帆申请ak/sk, 和开通对应模型
@@ -306,6 +323,7 @@ mysql:
   log-zap: true
 
 sqlite:
+  # 该路径必须存在 不然会报out of memory
   path: "/bfv-bot/"
   port: "3308"
   config: "charset=utf8mb4&parseTime=True&loc=Local"
@@ -401,14 +419,21 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 https://napneko.com/guide/start-install
 
-
 不要选择docker安装, 配置和升级比较麻烦
+
+> windows用户可以直接选择 [https://github.com/NapNeko/NapCat-Win-Installer/releases/download/v1.0.0/NapCatInstaller.exe](https://github.com/NapNeko/NapCat-Win-Installer/releases/download/v1.0.0/NapCatInstaller.exe) 这个安装
 
 ### json配置
 
 安装完启动完后, 可以在这个地方找到配置
 
-`/opt/QQ/resources/app/app_launcher/napcat/config`
+> Linux
+>
+> `/opt/QQ/resources/app/app_launcher/napcat/config`
+>
+> Windows
+>
+> `${NapCatQQ}/config`
 
 修改onebot11_[机器人qq号].json 配置
 
@@ -422,7 +447,7 @@ https://napneko.com/guide/start-install
     "http": {
         "enable": true,
         "host": "",
-        "port": 3001,
+        "port": 3000,
         "secret": "",
         "enableHeart": false,
         "enablePost": true,
@@ -458,11 +483,11 @@ https://napneko.com/guide/start-install
 Log":true,"fileLogLevel":"debug","consoleLogLevel":"info"}
 2024-10-07 01:47:56 [WARN] () | [Native] Error: Native Not Init
 2024-10-07 01:47:56 [INFO] () | [Notice] [OneBot11]
-    HTTP服务 已启动, :3001
-    HTTP上报服务 已启动, 上报地址: http://192.168.93.1:19997/api/event/post
+    HTTP服务 已启动, :3000
+    HTTP上报服务 已启动, 上报地址: http://localhost:19997/api/event/post
     WebSocket服务 未启动, :3001
     WebSocket反向服务 未启动, 反向地址:
-2024-10-07 01:47:56 [INFO] () | [OneBot] [HTTP Server Adapter] Start On Port 3001
+2024-10-07 01:47:56 [INFO] () | [OneBot] [HTTP Server Adapter] Start On Port 3000
 ```
 
 
@@ -471,7 +496,7 @@ Log":true,"fileLogLevel":"debug","consoleLogLevel":"info"}
 
 https://github.com/fxxk-bot/bfv-bot/releases
 
-配置文件路径是绝对路径
+配置文件路径如果不清楚就用绝对路径
 
 `./bfv-bot /bfv/config.yaml`
 
@@ -483,12 +508,17 @@ https://github.com/fxxk-bot/bfv-bot/releases
 
 ![示例](/doc/8.png)
 
-qq消息
+> 第一次启动会下载一个Chrome的依赖, 有几百MB, 耐心等待, 注意不要被杀毒软件删了
 
-如果程序启动, qq没有接收到信息, 说明napcat地址的配置有问题
+![示例](/doc/11.png)
 
+启动提醒
+
+1. 如果程序启动, 超级管理员qq没有接收到信息, 说明bfv-bot中napcat地址的配置有问题
 
 ![示例](/doc/9.png)
+
+2. 如果对机器人私聊发送`help`没有响应, 说明napcat的http上报地址配置有问题
 
 
 ## 数据来源
