@@ -260,6 +260,7 @@ qq-bot:
     # 搜索服务器
     server:
       - "server"
+    # 完整数据查询
     data:
       - "data"
   # 小电视喊话功能 需要先登录好 临时功能
@@ -325,7 +326,6 @@ mysql:
   log-zap: true
 
 sqlite:
-  # 该路径必须存在 不然会报out of memory
   path: "/bfv-bot/"
   port: "3308"
   config: "charset=utf8mb4&parseTime=True&loc=Local"
@@ -442,7 +442,7 @@ https://napneko.com/guide/start-install
 1. http.enable=true  (必须为true, 否则部分功能会失效)
 2. http.port 端口必须与bfv-bot的配置一致 (比如napcat中http.port的配置是3000, 那么bot的qq-bot.address的配置就得是: http://<napcat的ip>:3000)
 3. http.enablePost=true
-4. http.postUrls改为bfv-bot的访问路径 (比如bfv-bot的server.port为19997, 那么postUrl就需要是http://<bfvbot的ip>:19997/api/event/post)
+4. http.postUrls改为bfv-bot的访问路径 (比如bfv-bot的server.port为19998, 那么postUrl就需要是http://<bfvbot的ip>:19998/api/event/post)
 
 ```json
 {
@@ -453,7 +453,7 @@ https://napneko.com/guide/start-install
         "secret": "",
         "enableHeart": false,
         "enablePost": true,
-        "postUrls": ["http://192.168.93.1:19997/api/event/post"] 
+        "postUrls": ["http://192.168.93.1:19998/api/event/post"] 
     },
     "ws": {
         "enable": false,
@@ -486,7 +486,7 @@ Log":true,"fileLogLevel":"debug","consoleLogLevel":"info"}
 2024-10-07 01:47:56 [WARN] () | [Native] Error: Native Not Init
 2024-10-07 01:47:56 [INFO] () | [Notice] [OneBot11]
     HTTP服务 已启动, :3000
-    HTTP上报服务 已启动, 上报地址: http://localhost:19997/api/event/post
+    HTTP上报服务 已启动, 上报地址: http://localhost:19998/api/event/post
     WebSocket服务 未启动, :3001
     WebSocket反向服务 未启动, 反向地址:
 2024-10-07 01:47:56 [INFO] () | [OneBot] [HTTP Server Adapter] Start On Port 3000
