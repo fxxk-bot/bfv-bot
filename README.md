@@ -520,7 +520,7 @@ https://github.com/fxxk-bot/bfv-bot/releases
 
 ![示例](/doc/9.png)
 
-2. 如果对机器人私聊发送`help`没有响应, 说明napcat的http上报地址配置有问题
+2. 如果发送`help`没有响应, 说明napcat的http上报地址配置有问题
 
 
 ## 数据来源
