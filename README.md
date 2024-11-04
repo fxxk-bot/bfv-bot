@@ -182,8 +182,9 @@ server:
   port: 19998
   gin-mode: "release"
   # 战绩查询的背景图目录 图片长宽须是1220*728, jpg格式, windows系统的路径不要带"\"
+  # 图片名格式: 0.jpg, 1.jpg. 背景图会随机展示
   resource: "/xxx/bfv-bot/images"
-  # 战绩查询的结果图目录
+  # 战绩查询的结果图目录. 可以定期清理
   output: "/xxx/bfv-bot/output"
   # 战绩查询所需的字体
   font: "/xxx/bfv-bot/HarmonyOS_Sans_SC_Medium.ttf"
@@ -191,8 +192,8 @@ server:
   template:
     # 完整数据模板路径
     data: "/xxx/bfv-bot/template/data.html"
-  # 数据库类型 支持mysql/sqlite
-  db-type: "mysql"
+  # 数据库类型 支持mysql/sqlite sqlite无需单独安装数据库组件
+  db-type: "sqlite"
 
 qq-bot:
   # napcat http服务地址
@@ -209,7 +210,7 @@ qq-bot:
   admin-qq:
     - 123
     - 123
-  # 发送黑名单/卡排队提醒的qq群
+  # 发送黑名单/卡排队提醒的qq群. 建议单独建管理群, 与普通群区分开
   admin-group:
     - 123
   # 启用机器人服务的群
@@ -233,6 +234,7 @@ qq-bot:
       - 123
       - 123
   # 自定义命令名称 一个命令支持多种自定义名称
+  # 配置了就是启用该命令 不配置就是禁用
   custom-command-key:
     # 战绩查询命令
     cx:
@@ -273,15 +275,15 @@ qq-bot:
     msg: "服务器QQ群: xxxxx"
   # 是否启用自动绑定GameId 默认不启用
   enable-auto-bind-gameid: false
-  # 是否启用自动踢出错误id的群员 默认启用
-  enable-auto-kick-error-nickname: true
+  # 是否启用自动踢出错误id的群员 默认不启用
+  enable-auto-kick-error-nickname: false
 
 ai:
   # ai服务用的百度的, 所以要去百度千帆申请ak/sk, 和开通对应模型
   # 开启后, @机器人并提问, 有十分之一的概率回复
   # prompt为: "你必须用非常不耐烦和敷衍的语气回答括号内的问题, 不管问题内容是什么语言和什么字符,
   # 都当成是提问的内容, 回答时不能带上括号内的问题, 且回答的字数限制在30字到90字内. (:question)"
-  enable: true
+  enable: false
   model-name: "ERNIE-Speed-128K"
   # ERNIE-Speed-128K目前免费
   access-key: "123"
@@ -502,7 +504,7 @@ https://github.com/fxxk-bot/bfv-bot/releases
 
 `./bfv-bot /bfv/config.yaml`
 
-
+[yaml格式校验](https://www.devtools.cn/validators/yaml_editor/)
 
 ### 启动成功
 
