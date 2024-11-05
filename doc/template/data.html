@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
+    <meta charset="UTF-8">
     <title></title>
     <style>
         body {
@@ -60,6 +61,10 @@
             font-size: 12px;
         }
 
+        .bold {
+            font-weight: bold
+        }
+
     </style>
 </head>
 <body>
@@ -99,40 +104,40 @@
     <hr/>
 
     <p>
-        <span style="font-weight: bold">BFBAN</span>
+        <span class="bold">BFBAN</span>
         {{ if or (eq .Bfban.Status -1) (eq .Bfban.Status 7) }}
-        <span style="color: green">{{ .Bfban.Name }}</span>
+        <span class="bold" style="color: green">{{ .Bfban.Name }}</span>
 
         {{ else if or (eq .Bfban.Status 0) (eq .Bfban.Status 2) (eq .Bfban.Status 4) (eq .Bfban.Status 5) (eq .Bfban.Status 6) (eq .Bfban.Status 8) }}
-        <span style="color: yellow">{{ .Bfban.Name }}</span>
+        <span class="bold" style="color: yellow">{{ .Bfban.Name }}</span>
 
         {{ else if eq .Bfban.Status 1 }}
-        <span style="color: red">{{ .Bfban.Name }}</span>
+        <span class="bold" style="color: red">{{ .Bfban.Name }}</span>
 
         {{ else if eq .Bfban.Status 3 }}
-        <span style="color: blue">{{ .Bfban.Name }}</span>
+        <span class="bold" style="color: blue">{{ .Bfban.Name }}</span>
 
         {{ else }}
-        <span style="margin-left: 24px;">{{ .Bfban.Name }}</span>
+        <span class="bold" style="margin-left: 24px;">{{ .Bfban.Name }}</span>
 
         {{ end }}
     </p>
     <p>
-        <span style="font-weight: bold">ROBOT</span>
+        <span class="bold">ROBOT</span>
         {{ if or (eq .Bfvrobot.ReasonStatus -1) (eq .Bfvrobot.ReasonStatus 0) (eq .Bfvrobot.ReasonStatus 6) }}
-        <span style="color: green">{{ .Bfvrobot.ReasonStatusName }}</span>
+        <span class="bold" style="color: green">{{ .Bfvrobot.ReasonStatusName }}</span>
 
         {{ else if or (eq .Bfvrobot.ReasonStatus 1) (eq .Bfvrobot.ReasonStatus 4) }}
-        <span style="color: yellow">{{ .Bfvrobot.ReasonStatusName }}</span>
+        <span class="bold" style="color: yellow">{{ .Bfvrobot.ReasonStatusName }}</span>
 
         {{ else if or (eq .Bfvrobot.ReasonStatus 2) (eq .Bfvrobot.ReasonStatus 3) (eq .Bfvrobot.ReasonStatus 7) (eq .Bfvrobot.ReasonStatus 8) (eq .Bfvrobot.ReasonStatus 9) (eq .Bfvrobot.ReasonStatus 10) (eq .Bfvrobot.ReasonStatus 11) (eq .Bfvrobot.ReasonStatus 12) (eq .Bfvrobot.ReasonStatus 13) (eq .Bfvrobot.ReasonStatus 14) }}
-        <span style="color: red">{{ .Bfvrobot.ReasonStatusName }}</span>
+        <span class="bold" style="color: red">{{ .Bfvrobot.ReasonStatusName }}</span>
 
         {{ else if or (eq .Bfvrobot.ReasonStatus 4) (eq .Bfvrobot.ReasonStatus 5) (eq .Bfvrobot.ReasonStatus 15) }}
-        <span style="color: blue">{{ .Bfvrobot.ReasonStatusName }}</span>
+        <span class="bold" style="color: blue">{{ .Bfvrobot.ReasonStatusName }}</span>
 
         {{ else }}
-        <span style="margin-left: 24px;">{{ .Bfvrobot.ReasonStatusName }}</span>
+        <span class="bold" style="margin-left: 24px;">{{ .Bfvrobot.ReasonStatusName }}</span>
 
         {{ end }}
     </p>

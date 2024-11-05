@@ -40,6 +40,8 @@
 
 依赖一个html模板 -> [示例](/doc/template/data.html)
 
+html内容支持自定义样式
+
 下载后, 配置文件里需要指定这个文件的路径
 
 ### 周任务查询
@@ -456,9 +458,9 @@ https://napneko.com/guide/start-install
 修改onebot11_[机器人qq号].json 配置
 
 1. http.enable=true  (必须为true, 否则部分功能会失效)
-2. http.port 端口必须与bfv-bot的配置一致 (比如napcat中http.port的配置是3001, napcat的http.host一般情况可以不填. 那么bot的qq-bot.address的配置就得是: http://<napcat的ip>:3001)
+2. http.port 端口必须与bfv-bot的配置一致 (比如napcat中http.port的配置是3000, 那么bot的qq-bot.address的配置就得是: http://<napcat的ip>:3000)
 3. http.enablePost=true
-4. http.postUrls改为bfv-bot的访问路径 (比如bfv-bot的server.port为19997, 那么postUrl就需要是http://<bfvbot的ip>:19997/api/event/post)
+4. http.postUrls改为bfv-bot的访问路径 (比如bfv-bot的server.port为19998, 那么postUrl就需要是http://<bfvbot的ip>:19998/api/event/post)
 
 ```json
 {
@@ -469,7 +471,7 @@ https://napneko.com/guide/start-install
         "secret": "",
         "enableHeart": false,
         "enablePost": true,
-        "postUrls": ["http://192.168.93.1:19997/api/event/post"] 
+        "postUrls": ["http://192.168.93.1:19998/api/event/post"] 
     },
     "ws": {
         "enable": false,
@@ -502,7 +504,7 @@ Log":true,"fileLogLevel":"debug","consoleLogLevel":"info"}
 2024-10-07 01:47:56 [WARN] () | [Native] Error: Native Not Init
 2024-10-07 01:47:56 [INFO] () | [Notice] [OneBot11]
     HTTP服务 已启动, :3000
-    HTTP上报服务 已启动, 上报地址: http://localhost:19997/api/event/post
+    HTTP上报服务 已启动, 上报地址: http://localhost:19998/api/event/post
     WebSocket服务 未启动, :3001
     WebSocket反向服务 未启动, 反向地址:
 2024-10-07 01:47:56 [INFO] () | [OneBot] [HTTP Server Adapter] Start On Port 3000
@@ -518,7 +520,7 @@ https://github.com/fxxk-bot/bfv-bot/releases
 
 `./bfv-bot /bfv/config.yaml`
 
-
+[yaml格式校验](https://www.devtools.cn/validators/yaml_editor/)
 
 ### 启动成功
 
@@ -536,7 +538,7 @@ https://github.com/fxxk-bot/bfv-bot/releases
 
 ![示例](/doc/9.png)
 
-2. 如果对机器人私聊发送`help`没有响应, 说明napcat的http上报地址配置有问题
+2. 如果发送`help`没有响应, 说明napcat的http上报地址配置有问题
 
 
 ## 数据来源
