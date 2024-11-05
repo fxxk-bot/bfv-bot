@@ -36,7 +36,7 @@
 
 `data=id` 绑定后支持快捷查询(直接输入data即可)
 
-![示例](/doc/10.png)
+![示例](/doc/10.jpg)
 
 依赖一个html模板 -> [示例](/doc/template/data.html)
 
