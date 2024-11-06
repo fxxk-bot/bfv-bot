@@ -451,7 +451,7 @@ https://napneko.com/guide/start-install
 
 ### json配置
 
-安装完启动完后, 可以在这个地方找到配置
+安装完且扫码登录后, 可以在这个地方找到配置
 
 > Linux
 >
@@ -460,6 +460,7 @@ https://napneko.com/guide/start-install
 > Windows
 >
 > `${NapCatQQ}/config`
+
 
 修改onebot11_[机器人qq号].json 配置
 
