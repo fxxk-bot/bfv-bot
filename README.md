@@ -473,6 +473,8 @@ https://napneko.com/guide/start-install
 
 > windows用户可以直接选择 [https://github.com/NapNeko/NapCat-Win-Installer/releases/download/v1.0.0/NapCatInstaller.exe](https://github.com/NapNeko/NapCat-Win-Installer/releases/download/v1.0.0/NapCatInstaller.exe) 这个安装
 
+**Napcat的版本需要在3.6.11及以上**
+
 ### json配置
 
 安装完且扫码登录后, 可以在这个地方找到配置
