@@ -99,6 +99,8 @@ html内容支持自定义样式
 
 > `playerlist=miku`
 
+同样依赖一个html模板 -> [示例](/doc/template/playerlist.html)
+
 ![示例](/doc/13.jpg)
 
 ### 服务器内的群友
