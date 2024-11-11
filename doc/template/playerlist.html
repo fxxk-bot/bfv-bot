@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 15px;
+            height: 100%;
+            width: 100%;
+            color: white;
+            text-shadow: 1px 1px 2px black, -1px -1px 2px black, 1px -1px 2px black, -1px 1px 2px black;
+        }
+
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center center;
+            filter: blur(8px);
+            z-index: -1;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            width: 80%;
+            margin: -45px auto 0 auto;
+        }
+
+        .server-name {
+            text-align: center;
+            font-size: 38px;
+        }
+
+        .server-info {
+            font-size: 24px;
+            margin-left: 1300px;
+            margin-top: -45px;
+        }
+
+        .rank {
+            text-align: center;
+            color: black;
+            background-color: lightgray;
+            text-shadow: 0 0 black;
+            margin: 0 2px 0 2px;
+            border-radius: 2px;
+        }
+
+        .between {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .list {
+            font-size: 18px;
+            text-align: left;
+            margin-top: -10px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="background"></div>
+<script>
+    const elements = document.querySelectorAll('.background');
+    elements.forEach(element => {
+        element.setAttribute('style', "background-image: url(\"{{ .ServerInfo.ImageBase64 }}\");");
+    });
+</script>
+<div class="container">
+    <div class="server-name">
+        <p>{{ printf "%s" .ServerInfo.ServerName }}</p>
+    </div>
+
+    <div class="server-info">
+        <p><span>{{ .ServerInfo.MapName }}</span><span>/</span><span>{{ .ServerInfo.MapMode }}</span></p>
+    </div>
+    <div class="list between">
+        <div style="width: 48%">
+            <table style="width: 100%">
+                <tr>
+                    <th style="width: 6%"></th>
+                    <th style="width: 50%">ID</th>
+                    <th style="width: 10%">KD</th>
+                    <th style="width: 10%">KPM</th>
+                    <th style="width: 11%">Join</th>
+                    <th style="width: 13%">BFBAN</th>
+                </tr>
+                {{ range $index, $item := .TeamOne.List }}
+                    <tr>
+                        <td>
+                            <div class="rank">{{ $item.Rank }}</div>
+                        </td>
+                        <td>&nbsp;{{ $item.Name }}</td>
+                        <td>{{ $item.KillDeath }}</td>
+                        <td>{{ $item.KillsPerMinute }}</td>
+                        <td>{{ $item.Join }}</td>
+                        <td>
+                            {{ if or (eq $item.BfBanStatus -1) (eq $item.BfBanStatus 7) }}
+                                <span style="color: green; text-shadow: 0 0 black;">{{ $item.BfBanStatusName }}</span>
+
+                            {{ else if or (eq $item.BfBanStatus 0) (eq $item.BfBanStatus 2) (eq $item.BfBanStatus 4) (eq $item.BfBanStatus 5) (eq $item.BfBanStatus 6) (eq $item.BfBanStatus 8) }}
+                                <span style="color: yellow; text-shadow: 0 0 black;">{{ $item.BfBanStatusName }}</span>
+
+                            {{ else if eq $item.BfBanStatus 1 }}
+                                <span style="color: red; text-shadow: 0 0 black;">{{ $item.BfBanStatusName }}</span>
+
+                            {{ else if eq $item.BfBanStatus 3 }}
+                                <span style="color: blue; text-shadow: 0 0 black;">{{ $item.BfBanStatusName }}</span>
+
+                            {{ else }}
+                                <span style="margin-left: 24px;">{{ $item.BfBanStatusName }}</span>
+
+                            {{ end }}
+                        </td>
+                    </tr>
+                {{ end }}
+            </table>
+        </div>
+        <div style="width: 48%">
+            <table style="width: 100%">
+                <tr>
+                    <th style="width: 6%"></th>
+                    <th style="width: 50%">ID</th>
+                    <th style="width: 10%">KD</th>
+                    <th style="width: 10%">KPM</th>
+                    <th style="width: 11%">Join</th>
+                    <th style="width: 13%">BFBAN</th>
+                </tr>
+                {{ range $index, $item := .TeamTwo.List }}
+                    <tr>
+                        <td>
+                            <div class="rank">{{ $item.Rank }}</div>
+                        </td>
+                        <td>&nbsp;{{ $item.Name }}</td>
+                        <td>{{ $item.KillDeath }}</td>
+                        <td>{{ $item.KillsPerMinute }}</td>
+                        <td>{{ $item.Join }}</td>
+                        <td>
+                            {{ if or (eq $item.BfBanStatus -1) (eq $item.BfBanStatus 7) }}
+                                <span style="color: green; text-shadow: 0 0 black;">{{ $item.BfBanStatusName }}</span>
+
+                            {{ else if or (eq $item.BfBanStatus 0) (eq $item.BfBanStatus 2) (eq $item.BfBanStatus 4) (eq $item.BfBanStatus 5) (eq $item.BfBanStatus 6) (eq $item.BfBanStatus 8) }}
+                                <span style="color: yellow; text-shadow: 0 0 black;">{{ $item.BfBanStatusName }}</span>
+
+                            {{ else if eq $item.BfBanStatus 1 }}
+                                <span style="color: red; text-shadow: 0 0 black;">{{ $item.BfBanStatusName }}</span>
+
+                            {{ else if eq $item.BfBanStatus 3 }}
+                                <span style="color: blue; text-shadow: 0 0 black;">{{ $item.BfBanStatusName }}</span>
+
+                            {{ else }}
+                                <span style="margin-left: 24px;">{{ $item.BfBanStatusName }}</span>
+
+                            {{ end }}
+                        </td>
+                    </tr>
+                {{ end }}
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

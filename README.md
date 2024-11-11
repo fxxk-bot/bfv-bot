@@ -95,6 +95,18 @@ html内容支持自定义样式
 > 暂以文字形式返回搜索到的服务器信息
 
 
+### 服务器玩家列表
+
+> `playerlist=miku`
+
+![示例](/doc/13.jpg)
+
+### 服务器内的群友
+
+> `groupmember=miku`
+
+![示例](/doc/14.png)
+
 ### 自动修改群名片
 
 > 1. 加群验证方式必须选择"需要回答问题并由管理员审核"
@@ -203,6 +215,8 @@ server:
   resource: "/xxx/bfv-bot/images"
   # 战绩查询的结果图目录. 可以定期清理
   output: "/xxx/bfv-bot/output"
+  # 静态资源缓存文件夹
+  resources-cache: "/xxx/bfv-bot/cache"
   # 战绩查询所需的字体
   font: "/xxx/bfv-bot/HarmonyOS_Sans_SC_Medium.ttf"
   # 相关模板路径
@@ -211,6 +225,8 @@ server:
     data: "/xxx/bfv-bot/template/data.html"
     # 周任务模板路径
     task: "/xxx/bfv-bot/template/task.html"
+    # 服务器内玩家模板路径
+    playerlist: "/xxx/bfv-bot/template/playerlist.html"
   # 数据库类型 支持mysql/sqlite sqlite无需单独安装数据库组件
   db-type: "sqlite"
 
@@ -271,9 +287,11 @@ qq-bot:
     # 将qq号与ea id绑定
     bind:
       - "bind"
+      - "绑定"
     # 机器人帮助信息
     help:
       - ".help"
+      - "帮助"
     # 查询群组服务器
     group-server:
       - "开服了吗"
@@ -287,6 +305,12 @@ qq-bot:
     # 周任务
     task:
       - "task"
+    # 查询服务器玩家列表
+    playerlist:
+      - "playerlist"
+    # 查询在玩该服务器的群成员
+    group-member:
+      - "groupmember"
   # 小电视喊话功能 需要先登录好 临时功能
   bot-bot:
     # 小电视bot的qq号
