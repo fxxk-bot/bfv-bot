@@ -29,7 +29,7 @@
             position: relative;
             z-index: 1;
             width: 80%;
-            margin: -45px auto 0 auto;
+            margin: -20px auto 0 auto;
         }
 
         .server-name {
@@ -63,6 +63,10 @@
             margin-top: -10px;
         }
 
+        .group-member {
+            color: #15D30C
+        }
+
     </style>
 </head>
 <body>
@@ -87,7 +91,7 @@
             <table style="width: 100%">
                 <tr>
                     <th style="width: 6%"></th>
-                    <th style="width: 50%">ID</th>
+                    <th style="width: 50%">&nbsp;ID</th>
                     <th style="width: 10%">KD</th>
                     <th style="width: 10%">KPM</th>
                     <th style="width: 11%">Join</th>
@@ -98,7 +102,7 @@
                         <td>
                             <div class="rank">{{ $item.Rank }}</div>
                         </td>
-                        <td>&nbsp;{{ $item.Name }}</td>
+                        <td {{ if $item.IsGroupMember }} class="group-member" {{ end }}>&nbsp;{{ $item.Name }}</td>
                         <td>{{ $item.KillDeath }}</td>
                         <td>{{ $item.KillsPerMinute }}</td>
                         <td>{{ $item.Join }}</td>
@@ -128,7 +132,7 @@
             <table style="width: 100%">
                 <tr>
                     <th style="width: 6%"></th>
-                    <th style="width: 50%">ID</th>
+                    <th style="width: 50%">&nbsp;ID</th>
                     <th style="width: 10%">KD</th>
                     <th style="width: 10%">KPM</th>
                     <th style="width: 11%">Join</th>
@@ -139,7 +143,7 @@
                         <td>
                             <div class="rank">{{ $item.Rank }}</div>
                         </td>
-                        <td>&nbsp;{{ $item.Name }}</td>
+                        <td {{ if $item.IsGroupMember }} class="group-member" {{ end }}>&nbsp;{{ $item.Name }}</td>
                         <td>{{ $item.KillDeath }}</td>
                         <td>{{ $item.KillsPerMinute }}</td>
                         <td>{{ $item.Join }}</td>
