@@ -327,8 +327,7 @@ qq-bot:
   enable-auto-kick-error-nickname: false
   # playerlist列表中 是否展示群成员的标识 (id变成绿色)
   enable-playerlist-show-group-member: false
-  # 是否拒绝提供了错误id的加群申请
-  enable-reject-join-request: false
+
 
 ai:
   # ai服务用的百度的, 所以要去百度千帆申请ak/sk, 和开通对应模型
