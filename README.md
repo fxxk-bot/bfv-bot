@@ -310,7 +310,7 @@ qq-bot:
     # 查询服务器玩家列表
     playerlist:
       - "playerlist"
-    # 查询在玩该服务器的群成员
+    # 查询在玩该服务器的群成员 与qq-bot.active-group搭配使用, 只要在active-group的群内, 就认为是群成员
     group-member:
       - "groupmember"
   # 小电视喊话功能 需要先登录好 临时功能
@@ -325,6 +325,10 @@ qq-bot:
   enable-auto-bind-gameid: false
   # 是否启用自动踢出错误id的群员 默认不启用
   enable-auto-kick-error-nickname: false
+  # playerlist列表中 是否展示群成员的标识 (id变成绿色)
+  enable-playerlist-show-group-member: false
+  # 是否拒绝提供了错误id的加群申请
+  enable-reject-join-request: false
 
 ai:
   # ai服务用的百度的, 所以要去百度千帆申请ak/sk, 和开通对应模型
