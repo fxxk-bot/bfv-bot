@@ -1,0 +1,10 @@
+/.idea
+go.sum
+/log
+/log/*
+config-dev.yaml
+/test
+/dir/cache
+/cache
+bfv-bot.exe
+bfv_bot.db

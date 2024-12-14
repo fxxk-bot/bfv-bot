@@ -592,4 +592,4 @@ https://github.com/fxxk-bot/bfv-bot/releases
 
 
 
-优化代码中, 准备开源
+已开源, 代码在src文件夹下
