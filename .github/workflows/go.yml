@@ -1,0 +1,56 @@
+name: Go Project Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "构建的版本号"
+        required: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.21
+
+      - name: Grant execute permission to build script
+        run: chmod +x ./src/build.sh
+
+
+      - name: Run build script
+        run: ./src/build.sh
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ inputs.version }}
+          release_name: "bfv-bot-${{ inputs.version }}"
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Linux Release Asset
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./src/release/linux-amd64-bfv-bot
+          asset_name: linux-amd64-bfv-bot
+          asset_content_type: application/gzip
+
+
+      - name: Upload Linux Release Asset
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./src/release/windows-x64-bfv-bot.exe
+          asset_name: windows-x64-bfv-bot.exe
+          asset_content_type: application/gzip
