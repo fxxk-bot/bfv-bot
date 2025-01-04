@@ -49,6 +49,8 @@ jobs:
           asset_path: src/release/linux-amd64-bfv-bot
           asset_name: linux-amd64-bfv-bot
           asset_content_type: application/gzip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
       - name: Upload Windows Release Asset
@@ -58,3 +60,5 @@ jobs:
           asset_path: src/release/windows-x64-bfv-bot.exe
           asset_name: windows-x64-bfv-bot.exe
           asset_content_type: application/gzip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
