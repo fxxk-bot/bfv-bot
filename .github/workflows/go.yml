@@ -46,7 +46,7 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./release/linux-amd64-bfv-bot
+          asset_path: src/release/linux-amd64-bfv-bot
           asset_name: linux-amd64-bfv-bot
           asset_content_type: application/gzip
 
@@ -55,6 +55,6 @@ jobs:
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./release/windows-x64-bfv-bot.exe
+          asset_path: src/release/windows-x64-bfv-bot.exe
           asset_name: windows-x64-bfv-bot.exe
           asset_content_type: application/gzip
