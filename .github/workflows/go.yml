@@ -24,7 +24,7 @@ jobs:
         run: cd src
 
       - name: Grant execute permission to build script
-        run: chmod +x ./build.sh
+        run: chmod +x build.sh
 
 
       - name: Run build script
