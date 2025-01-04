@@ -479,7 +479,7 @@ https://napneko.com/guide/start-install
 
 > windows用户可以直接选择 [https://github.com/NapNeko/NapCat-Win-Installer/releases/download/v1.0.0/NapCatInstaller.exe](https://github.com/NapNeko/NapCat-Win-Installer/releases/download/v1.0.0/NapCatInstaller.exe) 这个安装
 
-**Napcat的版本需要在3.6.11及以上**
+**Napcat的版本需要在4.2.65及以上**
 
 ### json配置
 
@@ -503,35 +503,37 @@ https://napneko.com/guide/start-install
 
 ```json
 {
-    "http": {
+  "network": {
+    "httpServers": [
+      {
+        "name": "httpServer",
         "enable": true,
-        "host": "",
         "port": 3000,
-        "secret": "",
-        "enableHeart": false,
-        "enablePost": true,
-        "postUrls": ["http://192.168.93.1:19998/api/event/post"] 
-    },
-    "ws": {
-        "enable": false,
-        "host": "",
-        "port": 3001
-    },
-    "reverseWs": {
-        "enable": false,
-        "urls": []
-    },
-    "GroupLocalTime": {
-        "Record": false,
-        "RecordList": []
-    },
-    "debug": false,
-    "heartInterval": 30000,
-    "messagePostFormat": "array",
-    "enableLocalFile2Url": true,
-    "musicSignUrl": "",
-    "reportSelfMessage": false,
-    "token": ""
+        "host": "0.0.0.0",
+        "enableCors": true,
+        "enableWebsocket": true,
+        "messagePostFormat": "array",
+        "token": "",
+        "debug": false
+      }
+    ],
+    "httpClients": [
+      {
+        "name": "httpClient",
+        "enable": true,
+        "url": "http://127.0.0.1:19998/api/event/post",
+        "messagePostFormat": "array",
+        "reportSelfMessage": false,
+        "token": "",
+        "debug": false
+      }
+    ],
+    "websocketServers": [],
+    "websocketClients": []
+  },
+  "musicSignUrl": "",
+  "enableLocalFile2Url": false,
+  "parseMultMsg": true
 }
 ```
 改完后 重启`napcat`
@@ -539,14 +541,10 @@ https://napneko.com/guide/start-install
 正常的话就能看见控制台日志
 
 ```
-Log":true,"fileLogLevel":"debug","consoleLogLevel":"info"}
-2024-10-07 01:47:56 [WARN] () | [Native] Error: Native Not Init
-2024-10-07 01:47:56 [INFO] () | [Notice] [OneBot11]
-    HTTP服务 已启动, :3000
-    HTTP上报服务 已启动, 上报地址: http://localhost:19998/api/event/post
-    WebSocket服务 未启动, :3001
-    WebSocket反向服务 未启动, 反向地址:
-2024-10-07 01:47:56 [INFO] () | [OneBot] [HTTP Server Adapter] Start On Port 3000
+01-04 12:58:59 info [Notice] [OneBot11] [network] 配置加载
+HTTP服务: 0.0.0.0:3000, : 已启动
+HTTP上报服务: http://127.0.0.1:19998/api/event/post, : 已启动
+01-04 12:58:59 info [OneBot] [HTTP Server Adapter] Start On Port 3000
 ```
 
 
