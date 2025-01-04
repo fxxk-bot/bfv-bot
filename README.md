@@ -38,7 +38,7 @@
 
 ![示例](/doc/10.jpg)
 
-依赖一个html模板 -> [示例](/doc/template/data.html)
+依赖一个html模板 -> [示例](/src/template/data.html)
 
 html内容支持自定义样式
 
@@ -56,7 +56,7 @@ html内容支持自定义样式
 
 默认本周
 
-同样依赖一个html模板 -> [示例](/doc/template/task.html)
+同样依赖一个html模板 -> [示例](/src/template/task.html)
 
 ![示例](/doc/12.jpg)
 
@@ -99,7 +99,7 @@ html内容支持自定义样式
 
 > `playerlist=miku`
 
-同样依赖一个html模板 -> [示例](/doc/template/playerlist.html)
+同样依赖一个html模板 -> [示例](/src/template/playerlist.html)
 
 ![示例](/doc/13.jpg)
 

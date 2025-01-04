@@ -31,6 +31,7 @@ func PostByHeader(urlPar string, header map[string]string, data interface{}) (st
 	for key, value := range header {
 		req.Header.Set(key, value)
 	}
+	req.Header.Set("accept-language", "zh-CN,zh;q=0.9,en;q=0.8")
 
 	// 创建 http.Client 并设置超时时间为 5 秒
 	client := &http.Client{
@@ -73,7 +74,7 @@ func Post(urlPar string, data interface{}) (string, error) {
 	return PostByHeader(urlPar, m, data)
 }
 
-func GetByHeader(baseURL string, header map[string]string, queryParams map[string]string) (string, error) {
+func getByHeader(baseURL string, header map[string]string, queryParams map[string]string) (string, error) {
 
 	// 创建 URL 对象
 	u, err := url.Parse(baseURL)
@@ -105,6 +106,7 @@ func GetByHeader(baseURL string, header map[string]string, queryParams map[strin
 	for key, value := range header {
 		req.Header.Set(key, value)
 	}
+	req.Header.Set("accept-language", "zh-CN,zh;q=0.9,en;q=0.8")
 
 	// 发送请求
 	resp, err := client.Do(req)
@@ -132,5 +134,5 @@ func GetByHeader(baseURL string, header map[string]string, queryParams map[strin
 func Get(baseURL string, queryParams map[string]string) (string, error) {
 	m := make(map[string]string)
 	m["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
-	return GetByHeader(baseURL, m, queryParams)
+	return getByHeader(baseURL, m, queryParams)
 }

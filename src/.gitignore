@@ -8,3 +8,5 @@ config-dev.yaml
 /cache
 bfv-bot.exe
 bfv_bot.db
+/bfv-font
+/images
