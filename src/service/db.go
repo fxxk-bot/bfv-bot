@@ -7,7 +7,6 @@ import (
 	"errors"
 	"go.uber.org/zap"
 	"gorm.io/gorm/clause"
-	"strings"
 	"time"
 )
 
@@ -26,24 +25,6 @@ func (b *DbService) QueryAllBlackList() map[string]po.Blacklist {
 
 	for _, item := range blacklist {
 		listMap[item.Id] = item
-	}
-
-	return listMap
-}
-
-func (b *DbService) QueryAllIgnoreList() map[string]bool {
-
-	listMap := make(map[string]bool)
-
-	var ignorelist []po.Ignorelist
-	err := global.GDb.Raw("SELECT `id` FROM `ignorelist`").Scan(&ignorelist).Error
-	if err != nil {
-		global.GLog.Error("QueryAllIgnoreList", zap.Error(err))
-		return listMap
-	}
-
-	for _, list := range ignorelist {
-		listMap[strings.ToLower(list.Id)] = true
 	}
 
 	return listMap
@@ -91,31 +72,6 @@ func (b *DbService) AddSensitive(word string) error {
 
 func (b *DbService) RemoveSensitive(word string) error {
 	return global.GDb.Delete(&po.Sensitive{Id: word}).Error
-}
-
-func (b *DbService) AddIgnore(id string) error {
-	user := po.Ignorelist{Id: id}
-	err := global.GDb.Save(&user).Error
-	if err == nil {
-		global.GIgnoreListMap[id] = true
-	}
-	return err
-}
-
-func (b *DbService) RemoveIgnore(id string) error {
-	err := global.GDb.Delete(&po.Ignorelist{Id: id}).Error
-	if err == nil {
-		delete(global.GIgnoreListMap, id)
-	}
-	return err
-}
-
-func (b *DbService) DeleteAllIgnore() error {
-	err := global.GDb.Exec("DELETE FROM ignorelist").Error
-	if err == nil {
-		global.GIgnoreListMap = make(map[string]bool)
-	}
-	return err
 }
 
 func (b *DbService) AddBind(qq int64, name string, pid string) error {

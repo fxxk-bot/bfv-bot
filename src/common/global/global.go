@@ -23,7 +23,6 @@ var (
 	GSensitive     *sensitivewords.SensitiveWords
 	GAi            *qianfan.ChatCompletion
 	GBlackListMap  map[string]po.Blacklist
-	GIgnoreListMap map[string]bool
 	GBindMap       map[int64]string
 	GRodBrowser    *rod.Browser
 	GTofData       dto.TofData

@@ -4,7 +4,7 @@
 >
 > 程序本身不带任何项目/群组标识, 可任意使用/分发.
 >
-> 交流QQ群：717603854
+> QQ交流群：717603854
 
 
 发送`.help`查看完整功能菜单
@@ -444,15 +444,6 @@ CREATE TABLE `card_check`  (
   `fail_cnt` bigint(0) NOT NULL,
   `next_check_time` bigint(0) NOT NULL,
   PRIMARY KEY (`qq`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for ignorelist
--- ----------------------------
-DROP TABLE IF EXISTS `ignorelist`;
-CREATE TABLE `ignorelist`  (
-  `id` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
