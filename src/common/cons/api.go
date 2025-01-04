@@ -53,3 +53,6 @@ const BfBanBatchStatus = "https://api.bfban.com/api/player/batch"
 
 // BfvRobotBatchStatus 批量获取
 const BfvRobotBatchStatus = "https://api.bfvrobot.net/api/worker/player/getBatchAllStats"
+
+// GameToolsBatchStatus gt的批量接口
+const GameToolsBatchStatus = "https://api.gametools.network/bfv/multiple/"

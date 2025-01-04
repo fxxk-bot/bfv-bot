@@ -900,3 +900,25 @@ func GetBfvRobotBatchStats(pidArr []int64) (error, []dto.BfvRobotBatchStatsData)
 	}
 	return nil, apiResp.Data
 }
+
+func GetGameToolsBatchStatus(arr []int64) (error, []dto.GtBatchStatusData) {
+	result, err := http.Post(cons.GameToolsBatchStatus+"?raw=false&format_values=true", arr)
+	if err != nil {
+		global.GLog.Error("Get(cons.GameToolsBatchStatus, arr)",
+			zap.String("api result", result), zap.Error(err))
+		return err, nil
+	}
+
+	if result == "" || result == "{}" {
+		global.GLog.Error("gametools batch list empty", zap.Error(err))
+		return err, nil
+	}
+
+	var list dto.GtBatchStatusResp
+	err = des.StringToStruct(result, &list)
+	if err != nil {
+		global.GLog.Error("StringToStruct(result, &list)", zap.Error(err))
+		return err, nil
+	}
+	return nil, list.Data
+}

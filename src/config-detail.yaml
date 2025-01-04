@@ -110,7 +110,7 @@ qq-bot:
     # 喊话间隔 单位: 秒
     interval: 120
     # 喊话内容
-    msg: "服务器QQ群: xxxxx"
+    msg: "/chat 服务器qq群: xxxxx"
   # 是否启用自动绑定GameId 默认不启用
   enable-auto-bind-gameid: false
   # 是否启用自动踢出错误id的群员 默认不启用
@@ -148,6 +148,12 @@ bfv:
       owner-id: 123
       # 服务器名称
       server-name: "[BFV ROBOT] lv < 100"
+      # kpm限制 填0不限
+      kpm: 2.0
+      # 服内允许的最大等级 填0不限
+      max-rank: 200
+      # 服内允许的最小等级 填0不限
+      min-rank: 100
     - id: "200"
       owner-id: 123
       server-name: "[BFV ROBOT] lv < 200"

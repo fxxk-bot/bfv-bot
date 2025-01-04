@@ -3,9 +3,11 @@ package service
 import (
 	"bfv-bot/bot/group"
 	"bfv-bot/bot/private"
+	"bfv-bot/common/config"
 	"bfv-bot/common/cons"
 	"bfv-bot/common/global"
 	"bfv-bot/common/utils"
+	"bfv-bot/model/dto"
 	"bfv-bot/model/po"
 	"fmt"
 	"go.uber.org/zap"
@@ -24,11 +26,12 @@ func (c *CronService) CheckBlackListAndNotify() {
 		return
 	}
 
-	for _, serverInfo := range global.GConfig.Bfv.Server {
+	for index, serverInfo := range global.GConfig.Bfv.Server {
 
 		time.Sleep(2 * time.Second)
 
 		if serverInfo.GetGameId() == "" {
+			global.GLog.Info(serverInfo.ServerName + " gameid为空, 跳过检测")
 			continue
 		}
 		err, apiPlayers := utils.GetServerPlayerByGameToolsConvert(serverInfo.GetGameId())
@@ -39,12 +42,15 @@ func (c *CronService) CheckBlackListAndNotify() {
 		aTeamNotifyMap := make(map[string]string)
 		bTeamNotifyMap := make(map[string]string)
 
+		playerMap := make(map[int64]string)
+
 		for _, player := range apiPlayers.TeamOne {
 
 			value, ok := global.GBlackListMap[strconv.FormatInt(player.PersonaID, 10)]
 			if ok {
 				aTeamNotifyMap[player.Name] = value.Reason
 			}
+			playerMap[player.PersonaID] = player.Name
 		}
 
 		for _, player := range apiPlayers.TeamTwo {
@@ -53,7 +59,10 @@ func (c *CronService) CheckBlackListAndNotify() {
 			if ok {
 				bTeamNotifyMap[player.Name] = value.Reason
 			}
+			playerMap[player.PersonaID] = player.Name
 		}
+
+		checkRankAndKpm(&playerMap, serverInfo, index)
 
 		aTeamCnt := len(apiPlayers.TeamOne)
 		bTeamCnt := len(apiPlayers.TeamTwo)
@@ -97,6 +106,141 @@ func (c *CronService) CheckBlackListAndNotify() {
 		}
 	}
 
+}
+
+// checkRankAndKpm 请求接口并检查等级以及kpm
+func checkRankAndKpm(all *map[int64]string, serverInfo config.ServerInfo, index int) {
+
+	if serverInfo.Kpm == 0 && serverInfo.MaxRank == 0 && serverInfo.MinRank == 0 {
+		return
+	}
+
+	insertions := make([]dto.CheckPlayerData, 0)
+	exists := make([]dto.GtBatchStatusData, 0)
+
+	playerMap := serverInfo.GetPlayerMap()
+	// 如果上次数据长度为空 视为第一次检测
+	if len(playerMap) == 0 {
+		for key, value := range *all {
+			insertions = append(insertions, dto.CheckPlayerData{PersonaID: key, Name: value})
+		}
+	} else {
+		for key, value := range *all {
+			playerMapValue, ok := playerMap[key]
+			if ok {
+				exists = append(exists, playerMapValue)
+			} else {
+				insertions = append(insertions, dto.CheckPlayerData{PersonaID: key, Name: value})
+			}
+		}
+	}
+
+	finalResult := make([]dto.GtBatchStatusData, 0)
+	if len(insertions) > 16 {
+		// 计算中间位置
+		mid := len(insertions) / 2
+
+		part := make([][]dto.CheckPlayerData, 2)
+		// 分割切片
+		part[0] = insertions[:mid]
+		part[1] = insertions[mid:]
+		wg := sync.WaitGroup{}
+		wg.Add(2)
+
+		resultPart := make([][]dto.GtBatchStatusData, 2)
+
+		for i := 0; i < 2; i++ {
+			err := global.GPool.Submit(func() {
+				defer wg.Done()
+				err, data := utils.GetGameToolsBatchStatus(getId(part[i]))
+				if err != nil {
+					return
+				}
+				resultPart[i] = data
+			})
+			if err != nil {
+				return
+			}
+		}
+		wg.Wait()
+		finalResult = append(finalResult, resultPart[0]...)
+		finalResult = append(finalResult, resultPart[1]...)
+
+	} else {
+		err, data := utils.GetGameToolsBatchStatus(getId(insertions))
+		if err != nil {
+			return
+		}
+		finalResult = data
+	}
+
+	finalResult = append(finalResult, exists...)
+
+	finalMap := make(map[int64]dto.GtBatchStatusData)
+	for _, data := range finalResult {
+		pid, err := strconv.ParseInt(data.ID, 10, 64)
+		if err != nil {
+			continue
+		}
+		value, ok := (*all)[pid]
+		if ok {
+			data.Name = value
+		}
+		finalMap[pid] = data
+	}
+
+	global.GConfig.Bfv.Server[index].SetPlayerMap(finalMap)
+
+	builder := strings.Builder{}
+
+	for _, data := range finalMap {
+		loopBuf := strings.Builder{}
+		flag := false
+		if serverInfo.Kpm != 0 && data.KillsPerMinute > serverInfo.Kpm {
+			flag = true
+			loopBuf.WriteString("KPM: ")
+			loopBuf.WriteString(strconv.FormatFloat(data.KillsPerMinute, 'f', 2, 64))
+			loopBuf.WriteString(" 高于设定值,")
+		}
+
+		if serverInfo.MaxRank != 0 && data.Rank > serverInfo.MaxRank {
+			flag = true
+			loopBuf.WriteString("等级: ")
+			loopBuf.WriteString(strconv.FormatFloat(data.Rank, 'f', 0, 64))
+			loopBuf.WriteString(" 高于设定值,")
+
+		}
+
+		if serverInfo.MinRank != 0 && data.Rank < serverInfo.MinRank {
+			flag = true
+			loopBuf.WriteString("等级: ")
+			loopBuf.WriteString(strconv.FormatFloat(data.Rank, 'f', 0, 64))
+			loopBuf.WriteString(" 低于设定值,")
+		}
+
+		if flag {
+			str := loopBuf.String()
+			str = str[:len(str)-1]
+			builder.WriteString(data.Name)
+			builder.WriteString("\t[")
+			builder.WriteString(str)
+			builder.WriteString("]")
+			builder.WriteString("\n")
+		}
+	}
+	finalStr := builder.String()
+	if len(finalStr) > 0 {
+		finalStr = finalStr[:len(finalStr)-1]
+		group.SendGroupMsgMultiple(global.GConfig.QQBot.AdminGroup, finalStr)
+	}
+}
+
+func getId(param []dto.CheckPlayerData) []int64 {
+	int64s := make([]int64, 0)
+	for _, data := range param {
+		int64s = append(int64s, data.PersonaID)
+	}
+	return int64s
 }
 
 // GetTof 任务数据

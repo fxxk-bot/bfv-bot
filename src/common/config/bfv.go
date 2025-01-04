@@ -1,5 +1,7 @@
 package config
 
+import "bfv-bot/model/dto"
+
 type Bfv struct {
 	// 搜索服务器时 群组的唯一名称 例如: miku/7k7k
 	GroupUniName string `mapstructure:"group-uni-name" yaml:"group-uni-name"`
@@ -13,13 +15,18 @@ type Bfv struct {
 }
 
 type ServerInfo struct {
-	Id         string `mapstructure:"id" yaml:"id"`
-	OwnerId    string `mapstructure:"owner-id" yaml:"owner-id"`
-	ServerName string `mapstructure:"server-name" yaml:"server-name"`
+	Id         string  `mapstructure:"id" yaml:"id"`
+	OwnerId    string  `mapstructure:"owner-id" yaml:"owner-id"`
+	ServerName string  `mapstructure:"server-name" yaml:"server-name"`
+	Kpm        float64 `mapstructure:"kpm" yaml:"kpm"`
+	MaxRank    float64 `mapstructure:"max-rank" yaml:"max-rank"`
+	MinRank    float64 `mapstructure:"min-rank" yaml:"min-rank"`
 	// 运行中获取的id
 	gameId string
 	// bfvrobot token 与服务器绑定
 	token string
+	// playerMap 服内玩家数据
+	playerMap map[int64]dto.GtBatchStatusData
 }
 
 func (b *Bfv) ClearGameId() {
@@ -73,4 +80,12 @@ func (s *ServerInfo) SetToken(token string) {
 // GetToken 获取 GameId
 func (s *ServerInfo) GetToken() string {
 	return s.token
+}
+
+func (s *ServerInfo) SetPlayerMap(m map[int64]dto.GtBatchStatusData) {
+	s.playerMap = m
+}
+
+func (s *ServerInfo) GetPlayerMap() map[int64]dto.GtBatchStatusData {
+	return s.playerMap
 }
