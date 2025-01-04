@@ -1,10 +1,14 @@
-name: Go Project Build
+permissions:
+  contents: write
+
+
+name: Bot Build
 
 on:
   workflow_dispatch:
     inputs:
       version:
-        description: "构建的版本号"
+        description: "version"
         required: false
 
 jobs:
@@ -47,7 +51,7 @@ jobs:
           asset_content_type: application/gzip
 
 
-      - name: Upload Linux Release Asset
+      - name: Upload Windows Release Asset
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
