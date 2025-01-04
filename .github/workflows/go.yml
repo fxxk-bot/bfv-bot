@@ -20,11 +20,8 @@ jobs:
         with:
           go-version: 1.22
 
-      - name: Change directory to src
-        run: cd src
-
       - name: Grant execute permission to build script
-        run: chmod +x build.sh
+        run: chmod +x src/build.sh
 
 
       - name: Run build script
