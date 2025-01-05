@@ -335,6 +335,8 @@ qq-bot:
   enable-playerlist-show-group-member: false
   # 是否拒绝提供了错误id的加群申请
   enable-reject-join-request: false
+  # 是否拒绝等级为0的id的加群申请
+  enable-reject-zero-rank-join-request: false
 
 ai:
   # ai服务用的百度的, 所以要去百度千帆申请ak/sk, 和开通对应模型

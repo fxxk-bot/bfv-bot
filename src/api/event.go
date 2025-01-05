@@ -225,28 +225,47 @@ func (a *EventApi) Post(c *gin.Context) {
 
 						}
 					} else {
-						m["approve"] = true
-						_ = global.GPool.Submit(func() {
-							time.Sleep(1 * time.Second)
-							// id正确
-							group.SendAtGroupMsg(msg.GroupID, msg.UserID, global.GConfig.QQBot.WelcomeMsg)
-
-							group.SetCard(msg.GroupID, msg.UserID, name)
-							extendMsg := " 机器人已自动修改你的昵称为: [" + name + "]"
-							if global.GConfig.QQBot.ShowPlayerBaseInfo {
-								err, finalMsg := utils.GetBaseInfoAndStatusByName(&data)
-								if err == nil {
-									extendMsg += "\n\n该玩家基础数据如下:\n\n" + finalMsg
+						if global.GConfig.QQBot.EnableRejectZeroRankJoinRequest {
+							err, baseInfo := utils.GetPlayerBaseInfo(data.PID)
+							if err != nil {
+								m["approve"] = false
+								m["reason"] = "获取基础信息失败, 请稍后再试"
+							} else {
+								if baseInfo.BasicStats.Rank.Number == 0 {
+									m["approve"] = false
+									m["reason"] = "游戏内等级为0, 暂不能进群"
+								} else {
+									m["approve"] = true
 								}
 							}
-							group.SendAtGroupMsg(msg.GroupID, msg.UserID, extendMsg)
+						} else {
+							m["approve"] = true
+						}
+						boolObj := m["approve"]
 
-							err = dbService.AddBind(msg.UserID, data.Name, data.PID)
-							if err != nil {
-								global.GLog.Error("dbService.AddBind(msg.UserID, data.Name, data.PID)",
-									zap.Error(err))
-							}
-						})
+						if boolObj.(bool) {
+							_ = global.GPool.Submit(func() {
+								time.Sleep(1 * time.Second)
+								// id正确
+								group.SendAtGroupMsg(msg.GroupID, msg.UserID, global.GConfig.QQBot.WelcomeMsg)
+
+								group.SetCard(msg.GroupID, msg.UserID, name)
+								extendMsg := " 机器人已自动修改你的昵称为: [" + name + "]"
+								if global.GConfig.QQBot.ShowPlayerBaseInfo {
+									err, finalMsg := utils.GetBaseInfoAndStatusByName(&data)
+									if err == nil {
+										extendMsg += "\n\n该玩家基础数据如下:\n\n" + finalMsg
+									}
+								}
+								group.SendAtGroupMsg(msg.GroupID, msg.UserID, extendMsg)
+
+								err = dbService.AddBind(msg.UserID, data.Name, data.PID)
+								if err != nil {
+									global.GLog.Error("dbService.AddBind(msg.UserID, data.Name, data.PID)",
+										zap.Error(err))
+								}
+							})
+						}
 					}
 				}
 			} else {
