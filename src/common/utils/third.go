@@ -902,6 +902,9 @@ func GetBfvRobotBatchStats(pidArr []int64) (error, []dto.BfvRobotBatchStatsData)
 }
 
 func GetGameToolsBatchStatus(arr []int64) (error, []dto.GtBatchStatusData) {
+	if len(arr) == 0 {
+		return nil, []dto.GtBatchStatusData{}
+	}
 	result, err := http.Post(cons.GameToolsBatchStatus+"?raw=false&format_values=true", arr)
 	if err != nil {
 		global.GLog.Error("Get(cons.GameToolsBatchStatus, arr)",
@@ -914,11 +917,21 @@ func GetGameToolsBatchStatus(arr []int64) (error, []dto.GtBatchStatusData) {
 		return err, nil
 	}
 
-	var list dto.GtBatchStatusResp
-	err = des.StringToStruct(result, &list)
-	if err != nil {
-		global.GLog.Error("StringToStruct(result, &list)", zap.Error(err))
-		return err, nil
+	if len(arr) == 1 {
+		var data dto.GtBatchStatusData
+		err = des.StringToStruct(result, &data)
+		if err != nil {
+			global.GLog.Error("StringToStruct(result, &list)", zap.Error(err))
+			return err, nil
+		}
+		return nil, []dto.GtBatchStatusData{data}
+	} else {
+		var list dto.GtBatchStatusResp
+		err = des.StringToStruct(result, &list)
+		if err != nil {
+			global.GLog.Error("StringToStruct(result, &list)", zap.Error(err))
+			return err, nil
+		}
+		return nil, list.Data
 	}
-	return nil, list.Data
 }
