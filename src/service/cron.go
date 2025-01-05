@@ -351,7 +351,9 @@ func (c *CronService) BotToBot() {
 	if !global.GConfig.QQBot.BotToBot.Enable {
 		return
 	}
-	private.SendPrivateMsg(global.GConfig.QQBot.BotToBot.BotQq, global.GConfig.QQBot.BotToBot.Msg)
+	for _, msg := range global.GConfig.QQBot.BotToBot.Msg {
+		private.SendPrivateMsg(global.GConfig.QQBot.BotToBot.BotQq, msg)
+	}
 }
 
 func (c *CronService) AutoBindGameId() {

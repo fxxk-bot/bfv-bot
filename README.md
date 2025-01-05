@@ -346,8 +346,10 @@ qq-bot:
     bot-qq: 3889013937
     # 喊话间隔 单位: 秒
     interval: 120
-    # 喊话内容
-    msg: "/chat 服务器qq群: xxxxx"
+    # 喊话内容 支持一次发送多段文本
+    msg:
+      - "/chat 服务器qq群: xxxxx"
+      - "/chat 限杀100, 加群不限"
   # 是否启用自动绑定GameId 默认不启用
   enable-auto-bind-gameid: false
   # 是否启用自动踢出错误id的群员 默认不启用

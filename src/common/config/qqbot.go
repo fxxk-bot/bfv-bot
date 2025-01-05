@@ -53,10 +53,10 @@ type MuteConfig struct {
 }
 
 type BotToBotConfig struct {
-	Enable   bool   `mapstructure:"enable" yaml:"enable"`
-	BotQq    int64  `mapstructure:"bot-qq" yaml:"bot-qq"`
-	Interval int    `mapstructure:"interval" yaml:"interval"`
-	Msg      string `mapstructure:"msg" yaml:"msg"`
+	Enable   bool     `mapstructure:"enable" yaml:"enable"`
+	BotQq    int64    `mapstructure:"bot-qq" yaml:"bot-qq"`
+	Interval int      `mapstructure:"interval" yaml:"interval"`
+	Msg      []string `mapstructure:"msg" yaml:"msg"`
 }
 
 func (q *QQBot) InitMap() {
