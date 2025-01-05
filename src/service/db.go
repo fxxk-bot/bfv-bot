@@ -7,7 +7,7 @@ import (
 	"errors"
 	"go.uber.org/zap"
 	"gorm.io/gorm/clause"
-	"strings"
+	"strconv"
 	"time"
 )
 
@@ -31,19 +31,19 @@ func (b *DbService) QueryAllBlackList() map[string]po.Blacklist {
 	return listMap
 }
 
-func (b *DbService) QueryAllIgnoreList() map[string]bool {
+func (b *DbService) QueryAllJoinBlackList() map[int64]string {
 
-	listMap := make(map[string]bool)
+	listMap := make(map[int64]string)
 
-	var ignorelist []po.Ignorelist
-	err := global.GDb.Raw("SELECT `id` FROM `ignorelist`").Scan(&ignorelist).Error
+	var joinblacklist []po.JoinBlackList
+	err := global.GDb.Raw("SELECT `qq`, `reason` FROM `join_blacklist`").Scan(&joinblacklist).Error
 	if err != nil {
-		global.GLog.Error("QueryAllIgnoreList", zap.Error(err))
+		global.GLog.Error("QueryAllJoinBlackList", zap.Error(err))
 		return listMap
 	}
 
-	for _, list := range ignorelist {
-		listMap[strings.ToLower(list.Id)] = true
+	for _, list := range joinblacklist {
+		listMap[list.Qq] = list.Reason
 	}
 
 	return listMap
@@ -93,27 +93,35 @@ func (b *DbService) RemoveSensitive(word string) error {
 	return global.GDb.Delete(&po.Sensitive{Id: word}).Error
 }
 
-func (b *DbService) AddIgnore(id string) error {
-	user := po.Ignorelist{Id: id}
-	err := global.GDb.Save(&user).Error
+func (b *DbService) AddJoinBlackList(qqStr string, reason string) error {
+	qq, err := strconv.ParseInt(qqStr, 10, 64)
+	if err != nil {
+		return err
+	}
+	join := po.JoinBlackList{Qq: qq, Reason: reason}
+	err = global.GDb.Save(&join).Error
 	if err == nil {
-		global.GIgnoreListMap[id] = true
+		global.GJoinBlackListMap[qq] = reason
 	}
 	return err
 }
 
-func (b *DbService) RemoveIgnore(id string) error {
-	err := global.GDb.Delete(&po.Ignorelist{Id: id}).Error
+func (b *DbService) RemoveJoinBlackList(qqStr string) error {
+	qq, err := strconv.ParseInt(qqStr, 10, 64)
+	if err != nil {
+		return err
+	}
+	err = global.GDb.Delete(&po.JoinBlackList{Qq: qq}).Error
 	if err == nil {
-		delete(global.GIgnoreListMap, id)
+		delete(global.GJoinBlackListMap, qq)
 	}
 	return err
 }
 
-func (b *DbService) DeleteAllIgnore() error {
-	err := global.GDb.Exec("DELETE FROM ignorelist").Error
+func (b *DbService) DeleteAllJoinBlackList() error {
+	err := global.GDb.Exec("DELETE FROM `join_blacklist`").Error
 	if err == nil {
-		global.GIgnoreListMap = make(map[string]bool)
+		global.GJoinBlackListMap = make(map[int64]string)
 	}
 	return err
 }

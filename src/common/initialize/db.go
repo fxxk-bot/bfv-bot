@@ -15,7 +15,7 @@ func InitDb() {
 	}
 
 	// 自动创建表
-	err := global.GDb.AutoMigrate(&po.Blacklist{}, &po.Ignorelist{}, &po.Sensitive{}, &po.Bind{}, &po.CardCheck{})
+	err := global.GDb.AutoMigrate(&po.Blacklist{}, &po.JoinBlackList{}, &po.Sensitive{}, &po.Bind{}, &po.CardCheck{})
 	if err != nil {
 		panic(err)
 	}

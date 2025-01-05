@@ -167,110 +167,118 @@ func (a *EventApi) Post(c *gin.Context) {
 		// 当前群得是激活状态
 		// 加群处理逻辑
 		if global.GConfig.QQBot.IsActiveGroup(msg.GroupID) && msg.RequestType == "group" && msg.SubType == "add" {
-			match := GroupAnswerReg.FindStringSubmatch(msg.Comment)
 			m := make(map[string]interface{})
-			if len(match) > 1 {
-				name := strings.TrimSpace(match[1])
-				if name == "" {
-					m["approve"] = false
-					m["reason"] = "未提供id"
-				} else {
-					err, data := utils.CheckPlayer(url.QueryEscape(name))
 
-					if err != nil || data.PID == "" {
-						if global.GConfig.QQBot.EnableRejectJoinRequest {
-							m["approve"] = false
-							if err != nil {
-								if err.Error() == cons.PlayerNotFound {
-									m["reason"] = "未能确认你提供的id"
-								} else {
-									m["reason"] = "其他异常: " + err.Error()
-								}
-							} else {
-								m["reason"] = "pid获取失败"
-							}
-						} else {
-							m["approve"] = true
-
-							_ = global.GPool.Submit(func() {
-								time.Sleep(1 * time.Second)
-								// 欢迎信息
-								group.SendAtGroupMsg(msg.GroupID, msg.UserID, global.GConfig.QQBot.WelcomeMsg)
-								global.GLog.Error("utils.CheckPlayer", zap.Error(err))
-								if err.Error() == cons.PlayerNotFound {
-
-									content := " 机器人无法确认你提供的ID: [" + name + "]，请再次检查并修改你的群名片"
-
-									if global.GConfig.QQBot.EnableAutoKickErrorNickname {
-										content += "。超时将被踢出群聊"
-									}
-
-									group.SendAtGroupMsg(msg.GroupID, msg.UserID, content)
-									// 提供了错误id
-									// 第二次检测在6个小时后
-									// 第三次在48个小时后 第三次检测仍然无法确认的话 则踢出
-									err := dbService.AddCardCheck(msg.UserID, msg.GroupID)
-									if err != nil {
-										global.GLog.Error("dbService.AddCardCheck", zap.Error(err))
-									}
-								} else {
-									group.SendAtGroupMsg(msg.GroupID, msg.UserID,
-										" 机器人已自动修改你的昵称为: ["+name+"]")
-									group.SetCard(msg.GroupID, msg.UserID, name)
-
-									private.SendPrivateMsgMultiple(global.GConfig.QQBot.AdminQq,
-										fmt.Sprintf("ID服务异常, 无法确认qq: %d 提供的id: %s", msg.UserID, name))
-								}
-							})
-
-						}
+			// 优先判断黑名单
+			value, ok := global.GJoinBlackListMap[msg.UserID]
+			if ok {
+				m["approve"] = false
+				m["reason"] = fmt.Sprintf("黑名单拒绝加群, 原因: %s", value)
+			} else {
+				match := GroupAnswerReg.FindStringSubmatch(msg.Comment)
+				if len(match) > 1 {
+					name := strings.TrimSpace(match[1])
+					if name == "" {
+						m["approve"] = false
+						m["reason"] = "未提供id"
 					} else {
-						if global.GConfig.QQBot.EnableRejectZeroRankJoinRequest {
-							err, baseInfo := utils.GetPlayerBaseInfo(data.PID)
-							if err != nil {
+						err, data := utils.CheckPlayer(url.QueryEscape(name))
+
+						if err != nil || data.PID == "" {
+							if global.GConfig.QQBot.EnableRejectJoinRequest {
 								m["approve"] = false
-								m["reason"] = "获取基础信息失败, 请稍后再试"
-							} else {
-								if baseInfo.BasicStats.Rank.Number == 0 {
-									m["approve"] = false
-									m["reason"] = "游戏内等级为0, 暂不能进群"
+								if err != nil {
+									if err.Error() == cons.PlayerNotFound {
+										m["reason"] = "未能确认你提供的id"
+									} else {
+										m["reason"] = "其他异常: " + err.Error()
+									}
 								} else {
-									m["approve"] = true
+									m["reason"] = "pid获取失败"
 								}
+							} else {
+								m["approve"] = true
+
+								_ = global.GPool.Submit(func() {
+									time.Sleep(1 * time.Second)
+									// 欢迎信息
+									group.SendAtGroupMsg(msg.GroupID, msg.UserID, global.GConfig.QQBot.WelcomeMsg)
+									global.GLog.Error("utils.CheckPlayer", zap.Error(err))
+									if err.Error() == cons.PlayerNotFound {
+
+										content := " 机器人无法确认你提供的ID: [" + name + "]，请再次检查并修改你的群名片"
+
+										if global.GConfig.QQBot.EnableAutoKickErrorNickname {
+											content += "。超时将被踢出群聊"
+										}
+
+										group.SendAtGroupMsg(msg.GroupID, msg.UserID, content)
+										// 提供了错误id
+										// 第二次检测在6个小时后
+										// 第三次在48个小时后 第三次检测仍然无法确认的话 则踢出
+										err := dbService.AddCardCheck(msg.UserID, msg.GroupID)
+										if err != nil {
+											global.GLog.Error("dbService.AddCardCheck", zap.Error(err))
+										}
+									} else {
+										group.SendAtGroupMsg(msg.GroupID, msg.UserID,
+											" 机器人已自动修改你的昵称为: ["+name+"]")
+										group.SetCard(msg.GroupID, msg.UserID, name)
+
+										private.SendPrivateMsgMultiple(global.GConfig.QQBot.AdminQq,
+											fmt.Sprintf("ID服务异常, 无法确认qq: %d 提供的id: %s", msg.UserID, name))
+									}
+								})
+
 							}
 						} else {
-							m["approve"] = true
-						}
-						boolObj := m["approve"]
-
-						if boolObj.(bool) {
-							_ = global.GPool.Submit(func() {
-								time.Sleep(1 * time.Second)
-								// id正确
-								group.SendAtGroupMsg(msg.GroupID, msg.UserID, global.GConfig.QQBot.WelcomeMsg)
-
-								group.SetCard(msg.GroupID, msg.UserID, name)
-								extendMsg := " 机器人已自动修改你的昵称为: [" + name + "]"
-								if global.GConfig.QQBot.ShowPlayerBaseInfo {
-									err, finalMsg := utils.GetBaseInfoAndStatusByName(&data)
-									if err == nil {
-										extendMsg += "\n\n该玩家基础数据如下:\n\n" + finalMsg
+							if global.GConfig.QQBot.EnableRejectZeroRankJoinRequest {
+								err, baseInfo := utils.GetPlayerBaseInfo(data.PID)
+								if err != nil {
+									m["approve"] = false
+									m["reason"] = "获取基础信息失败, 请稍后再试"
+								} else {
+									if baseInfo.BasicStats.Rank.Number == 0 {
+										m["approve"] = false
+										m["reason"] = "游戏内等级为0, 暂不能进群"
+									} else {
+										m["approve"] = true
 									}
 								}
-								group.SendAtGroupMsg(msg.GroupID, msg.UserID, extendMsg)
+							} else {
+								m["approve"] = true
+							}
+							boolObj := m["approve"]
 
-								err = dbService.AddBind(msg.UserID, data.Name, data.PID)
-								if err != nil {
-									global.GLog.Error("dbService.AddBind(msg.UserID, data.Name, data.PID)",
-										zap.Error(err))
-								}
-							})
+							if boolObj.(bool) {
+								_ = global.GPool.Submit(func() {
+									time.Sleep(1 * time.Second)
+									// id正确
+									group.SendAtGroupMsg(msg.GroupID, msg.UserID, global.GConfig.QQBot.WelcomeMsg)
+
+									group.SetCard(msg.GroupID, msg.UserID, name)
+									extendMsg := " 机器人已自动修改你的昵称为: [" + name + "]"
+									if global.GConfig.QQBot.ShowPlayerBaseInfo {
+										err, finalMsg := utils.GetBaseInfoAndStatusByName(&data)
+										if err == nil {
+											extendMsg += "\n\n该玩家基础数据如下:\n\n" + finalMsg
+										}
+									}
+									group.SendAtGroupMsg(msg.GroupID, msg.UserID, extendMsg)
+
+									err = dbService.AddBind(msg.UserID, data.Name, data.PID)
+									if err != nil {
+										global.GLog.Error("dbService.AddBind(msg.UserID, data.Name, data.PID)",
+											zap.Error(err))
+									}
+								})
+							}
 						}
 					}
+				} else {
+					m["approve"] = false
+					m["reason"] = "未提供id"
 				}
-			} else {
-				m["approve"] = false
-				m["reason"] = "未提供id"
 			}
 			resp.ReplyWithData(c, m)
 			return

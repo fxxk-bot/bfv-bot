@@ -18,8 +18,8 @@ func init() {
 	privateCommandMap["removecardcheck"] = removecardcheck
 	privateCommandMap["addsensitive"] = addsensitive
 	privateCommandMap["removesensitive"] = removesensitive
-	privateCommandMap["addignore"] = addignore
-	privateCommandMap["removeignore"] = removeignore
+	privateCommandMap["addjoinblacklist"] = addjoinblacklist
+	privateCommandMap["removejoinblacklist"] = removejoinblacklist
 	privateCommandMap["bindtoken"] = bindtoken
 	privateCommandMap["bindgameid"] = bindgameid
 	privateCommandMap["op"] = op
@@ -33,8 +33,8 @@ func init() {
 	privateOpCommandMap["checknow"] = opChecknow
 	privateOpCommandMap["gameid"] = opGameid
 	privateOpCommandMap["token"] = opToken
-	privateOpCommandMap["ignorelist"] = opIgnorelist
-	privateOpCommandMap["deleteignorelist"] = opDeleteignorelist
+	privateOpCommandMap["joinblacklist"] = opJoinBlackList
+	privateOpCommandMap["deletejoinblacklist"] = opDeletejoinblacklist
 	privateOpCommandMap["blacklist"] = opBlacklist
 
 	privateQuickCommandMap["help"] = getPrivateHelpInfo
@@ -98,23 +98,30 @@ func opToken(_ *req.MsgData, c *gin.Context, _ string, _ string) {
 	resp.ReplyOk(c, builder.String())
 }
 
-func opIgnorelist(_ *req.MsgData, c *gin.Context, _ string, _ string) {
-	list := dbService.QueryAllIgnoreList()
+func opJoinBlackList(_ *req.MsgData, c *gin.Context, _ string, _ string) {
+	list := dbService.QueryAllJoinBlackList()
 	var builder strings.Builder
-	builder.WriteString("忽略名单\n")
-	for key := range list {
-		builder.WriteString(key)
+	builder.WriteString("加群黑名单\n")
+	for key, value := range list {
+		builder.WriteString(strconv.FormatInt(key, 10))
+		builder.WriteString("\t")
+		builder.WriteString(value)
+		builder.WriteString("\n")
 		builder.WriteString("\n")
 	}
-	resp.ReplyOk(c, builder.String())
+	finalStr := builder.String()
+	if len(finalStr) > 0 {
+		finalStr = finalStr[:len(finalStr)-1]
+	}
+	resp.ReplyOk(c, finalStr)
 }
 
-func opDeleteignorelist(_ *req.MsgData, c *gin.Context, _ string, _ string) {
-	err := dbService.DeleteAllIgnore()
+func opDeletejoinblacklist(_ *req.MsgData, c *gin.Context, _ string, _ string) {
+	err := dbService.DeleteAllJoinBlackList()
 	if err != nil {
-		resp.ReplyOk(c, "清空忽略名单失败")
+		resp.ReplyOk(c, "清空加群黑名单失败")
 	} else {
-		resp.ReplyOk(c, "清空忽略名单成功")
+		resp.ReplyOk(c, "清空加群黑名单成功")
 	}
 }
 
@@ -186,21 +193,20 @@ func removesensitive(_ *req.MsgData, c *gin.Context, _ string, value string) {
 
 }
 
-func addignore(_ *req.MsgData, c *gin.Context, _ string, value string) {
-	err := dbService.AddIgnore(value)
-	if err != nil {
-		resp.ReplyOk(c, "添加失败")
-	} else {
-		resp.ReplyOk(c, "忽略名单添加成功")
-	}
+func addjoinblacklist(msg *req.MsgData, c *gin.Context, _ string, value string) {
+
+	flow.InitPrivateFlow(msg.UserID, msg.MessageID, flow.AddJoinBlack, value)
+	private.SendPrivateMsg(msg.UserID, "[添加加群黑名单] 请输入原因")
+
+	resp.EmptyOk(c)
 }
 
-func removeignore(_ *req.MsgData, c *gin.Context, _ string, value string) {
-	err := dbService.RemoveIgnore(value)
+func removejoinblacklist(_ *req.MsgData, c *gin.Context, _ string, value string) {
+	err := dbService.RemoveJoinBlackList(value)
 	if err != nil {
 		resp.ReplyOk(c, "移除失败")
 	} else {
-		resp.ReplyOk(c, fmt.Sprintf("忽略名单用户 [%s] 移除成功", value))
+		resp.ReplyOk(c, fmt.Sprintf("[移除加群黑名单] [%s] 移除成功", value))
 	}
 }
 
@@ -236,8 +242,8 @@ func getPrivateHelpInfo(_ *req.MsgData, c *gin.Context, _ string) {
 	builder.WriteString("移除id检测: removecardcheck=<qq>\n")
 	builder.WriteString("添加敏感词: addsensitive=<id>\n")
 	builder.WriteString("移除敏感词: removesensitive=<id>\n")
-	builder.WriteString("添加忽略名单: addignore=<id>\n")
-	builder.WriteString("移除忽略名单: removeignore=<id>\n")
+	builder.WriteString("添加加群黑名单: addjoinblacklist=<qq>\n")
+	builder.WriteString("移除加群黑名单: removejoinblacklist=<qq>\n")
 	builder.WriteString("获取游戏id: op=gameid\n")
 	builder.WriteString("获取服务器token: op=token\n")
 	builder.WriteString("开始检测黑名单: op=start\n")
@@ -245,8 +251,8 @@ func getPrivateHelpInfo(_ *req.MsgData, c *gin.Context, _ string) {
 	builder.WriteString("开始喊话: op=start-broadcast\n")
 	builder.WriteString("停止喊话: op=stop-broadcast\n")
 	builder.WriteString("立即检测黑名单: op=checknow\n")
-	builder.WriteString("清空忽略名单: op=deleteignorelist\n")
-	builder.WriteString("忽略列表: op=ignorelist\n")
+	builder.WriteString("清空加群黑名单: op=deletejoinblacklist\n")
+	builder.WriteString("加群黑名单列表: op=joinblacklist\n")
 	builder.WriteString("黑名单列表: op=blacklist")
 	resp.ReplyOk(c, builder.String())
 }

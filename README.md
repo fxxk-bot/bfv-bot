@@ -1,10 +1,25 @@
 # BFV-BOT
 
-> 战地五Q群机器人, 支持战绩查询、屏蔽查询、周任务查询、加群自动改名片、黑名单进服提醒、卡排队提醒、自动宵禁、自定义命令名称...
->
+| 功能         | 支持 |
+|------------|----|
+| 战绩查询       | ✅  |
+| 屏蔽查询       | ✅  |
+| 绑定后快捷查询    | ✅  |
+| 周任务查询      | ✅  |
+| 服内玩家列表     | ✅  |
+| 加群自动改名片    | ✅  |
+| 黑名单进服提醒    | ✅  |
+| KPM和等级检测   | ✅  |
+| 加群黑名单      | ✅  |
+| q群内敏感词自动撤回 | ✅  |
+| 卡排队提醒      | ✅  |
+| 自动宵禁       | ✅  |
+| 自定义命令名称    | ✅  |
+
+
 > 程序本身不带任何项目/群组标识, 可任意使用/分发.
 >
-> 交流QQ群：717603854
+> qq交流群: 717603854
 
 
 发送`.help`查看完整功能菜单
@@ -166,6 +181,12 @@ html内容支持自定义样式
 ### 移除黑名单
 
 `removeblack=id`
+
+### 添加加群黑名单
+
+`addjoinblacklist=qq`
+
+![示例](/doc/16.png)
 
 ### 移除id检测
 
@@ -372,7 +393,7 @@ bfv:
       max-rank: 200
       # 服内允许的最小等级 填0不限
       min-rank: 100
-      # 人数小于该值时, 不提示kpm或超等级信息
+      # 人数小于该值时, 不提示kpm或超等级信息 填0表示 服内有人就检测
       min-players-for-warnings: 32
     - id: "200"
       owner-id: 123
@@ -463,13 +484,13 @@ CREATE TABLE `card_check`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Table structure for ignorelist
+-- Table structure for join_blacklist
 -- ----------------------------
-DROP TABLE IF EXISTS `ignorelist`;
-CREATE TABLE `ignorelist`  (
-  `id` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+DROP TABLE IF EXISTS `join_blacklist`;
+CREATE TABLE `join_blacklist` (
+    `qq` bigint NOT NULL,
+    PRIMARY KEY (`qq`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------
 -- Table structure for sensitive

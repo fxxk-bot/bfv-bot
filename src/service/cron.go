@@ -46,10 +46,6 @@ func (c *CronService) CheckBlackListAndNotify() {
 
 		for _, player := range apiPlayers.TeamOne {
 
-			if _, ok := global.GIgnoreListMap[strings.ToLower(player.Name)]; ok {
-				continue
-			}
-
 			value, ok := global.GBlackListMap[strconv.FormatInt(player.PersonaID, 10)]
 			if ok {
 				aTeamNotifyMap[player.Name] = value.Reason
@@ -58,10 +54,6 @@ func (c *CronService) CheckBlackListAndNotify() {
 		}
 
 		for _, player := range apiPlayers.TeamTwo {
-
-			if _, ok := global.GIgnoreListMap[strings.ToLower(player.Name)]; ok {
-				continue
-			}
 
 			value, ok := global.GBlackListMap[strconv.FormatInt(player.PersonaID, 10)]
 			if ok {

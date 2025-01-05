@@ -10,6 +10,7 @@ import (
 const Ban = "ban"
 const RemoveBan = "remove-ban"
 const AddBlack = "addblack"
+const AddJoinBlack = "addjoinblack"
 const BindToken = "bind-token"
 const BindGameID = "bind-gameid"
 
@@ -18,6 +19,7 @@ func init() {
 	GroupStepMap[RemoveBan] = RemoveBanStep
 
 	PrivateStepMap[AddBlack] = AddBlackStep
+	PrivateStepMap[AddJoinBlack] = AddJoinBlackStep
 	PrivateStepMap[BindToken] = BindTokenStep
 	PrivateStepMap[BindGameID] = BindGameIDStep
 }

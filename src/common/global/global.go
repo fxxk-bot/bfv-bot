@@ -15,18 +15,18 @@ import (
 )
 
 var (
-	GConfig        config.Config
-	GLog           *zap.Logger
-	GDb            *gorm.DB
-	GCron          *cron.Cron
-	GPool          *ants.Pool
-	GSensitive     *sensitivewords.SensitiveWords
-	GAi            *qianfan.ChatCompletion
-	GBlackListMap  map[string]po.Blacklist
-	GIgnoreListMap map[string]bool
-	GBindMap       map[int64]string
-	GRodBrowser    *rod.Browser
-	GTofData       dto.TofData
-	GTofDataCache  sync.Map
-	GResourceCache sync.Map
+	GConfig           config.Config
+	GLog              *zap.Logger
+	GDb               *gorm.DB
+	GCron             *cron.Cron
+	GPool             *ants.Pool
+	GSensitive        *sensitivewords.SensitiveWords
+	GAi               *qianfan.ChatCompletion
+	GBlackListMap     map[string]po.Blacklist
+	GJoinBlackListMap map[int64]string
+	GBindMap          map[int64]string
+	GRodBrowser       *rod.Browser
+	GTofData          dto.TofData
+	GTofDataCache     sync.Map
+	GResourceCache    sync.Map
 )
