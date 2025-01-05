@@ -115,6 +115,11 @@ func checkRankAndKpm(all *map[int64]string, serverInfo config.ServerInfo, index 
 		return
 	}
 
+	if len(*all) < serverInfo.MinPlayersForWarnings {
+		global.GLog.Info("服内玩家小于设定值, 跳过检测")
+		return
+	}
+
 	insertions := make([]dto.CheckPlayerData, 0)
 	exists := make([]dto.GtBatchStatusData, 0)
 
@@ -200,22 +205,27 @@ func checkRankAndKpm(all *map[int64]string, serverInfo config.ServerInfo, index 
 			flag = true
 			loopBuf.WriteString("KPM: ")
 			loopBuf.WriteString(strconv.FormatFloat(data.KillsPerMinute, 'f', 2, 64))
-			loopBuf.WriteString(" 高于设定值,")
+			loopBuf.WriteString(" 高于设定值")
+			loopBuf.WriteString(strconv.FormatFloat(serverInfo.Kpm, 'f', 2, 64))
+			loopBuf.WriteString(",")
 		}
 
 		if serverInfo.MaxRank != 0 && data.Rank > serverInfo.MaxRank {
 			flag = true
 			loopBuf.WriteString("等级: ")
 			loopBuf.WriteString(strconv.FormatFloat(data.Rank, 'f', 0, 64))
-			loopBuf.WriteString(" 高于设定值,")
-
+			loopBuf.WriteString(" 高于设定值")
+			loopBuf.WriteString(strconv.FormatFloat(serverInfo.MaxRank, 'f', 0, 64))
+			loopBuf.WriteString(",")
 		}
 
 		if serverInfo.MinRank != 0 && data.Rank < serverInfo.MinRank {
 			flag = true
 			loopBuf.WriteString("等级: ")
 			loopBuf.WriteString(strconv.FormatFloat(data.Rank, 'f', 0, 64))
-			loopBuf.WriteString(" 低于设定值,")
+			loopBuf.WriteString(" 低于设定值")
+			loopBuf.WriteString(strconv.FormatFloat(serverInfo.MinRank, 'f', 0, 64))
+			loopBuf.WriteString(",")
 		}
 
 		if flag {

@@ -15,12 +15,13 @@ type Bfv struct {
 }
 
 type ServerInfo struct {
-	Id         string  `mapstructure:"id" yaml:"id"`
-	OwnerId    string  `mapstructure:"owner-id" yaml:"owner-id"`
-	ServerName string  `mapstructure:"server-name" yaml:"server-name"`
-	Kpm        float64 `mapstructure:"kpm" yaml:"kpm"`
-	MaxRank    float64 `mapstructure:"max-rank" yaml:"max-rank"`
-	MinRank    float64 `mapstructure:"min-rank" yaml:"min-rank"`
+	Id                    string  `mapstructure:"id" yaml:"id"`
+	OwnerId               string  `mapstructure:"owner-id" yaml:"owner-id"`
+	ServerName            string  `mapstructure:"server-name" yaml:"server-name"`
+	Kpm                   float64 `mapstructure:"kpm" yaml:"kpm"`
+	MaxRank               float64 `mapstructure:"max-rank" yaml:"max-rank"`
+	MinRank               float64 `mapstructure:"min-rank" yaml:"min-rank"`
+	MinPlayersForWarnings int     `mapstructure:"min-players-for-warnings" yaml:"min-players-for-warnings"`
 	// 运行中获取的id
 	gameId string
 	// bfvrobot token 与服务器绑定

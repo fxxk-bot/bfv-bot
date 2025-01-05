@@ -372,6 +372,8 @@ bfv:
       max-rank: 200
       # 服内允许的最小等级 填0不限
       min-rank: 100
+      # 人数小于该值时, 不提示kpm或超等级信息
+      min-players-for-warnings: 32
     - id: "200"
       owner-id: 123
       server-name: "[BFV ROBOT] lv < 200"
