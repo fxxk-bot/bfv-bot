@@ -43,6 +43,9 @@ func main() {
 	// 黑名单列表
 	initialize.LoadBlackList()
 
+	// 忽略列表
+	initialize.LoadIgnoreList()
+
 	// rod
 	initialize.InitRod()
 
