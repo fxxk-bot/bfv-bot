@@ -231,7 +231,7 @@ func checkRankAndKpm(all *map[int64]string, serverInfo config.ServerInfo, index 
 	finalStr := builder.String()
 	if len(finalStr) > 0 {
 		finalStr = finalStr[:len(finalStr)-1]
-		group.SendGroupMsgMultiple(global.GConfig.QQBot.AdminGroup, finalStr)
+		group.SendGroupMsgMultiple(global.GConfig.QQBot.AdminGroup, serverInfo.ServerName+"\n\n"+finalStr)
 	}
 }
 
