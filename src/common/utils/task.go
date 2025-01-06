@@ -113,7 +113,7 @@ func GetTaskAndCache(offset int) (string, error) {
 	}
 
 	ys := []int{1, 2, 3}
-	xs := []int{1, 2, 3, 4, 5, 6, 7, 8, 9}
+	xs := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 	data["Rows"] = dto.Rows{Xs: xs, Ys: ys}
 
 	for _, x := range xs {
