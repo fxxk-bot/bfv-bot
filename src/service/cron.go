@@ -352,6 +352,7 @@ func (c *CronService) BotToBot() {
 		return
 	}
 	for _, msg := range global.GConfig.QQBot.BotToBot.Msg {
+		time.Sleep(time.Duration(global.GConfig.QQBot.BotToBot.MultiMsgInterval) * time.Second)
 		private.SendPrivateMsg(global.GConfig.QQBot.BotToBot.BotQq, msg)
 	}
 }

@@ -346,6 +346,8 @@ qq-bot:
     bot-qq: 3889013937
     # 喊话间隔 单位: 秒
     interval: 120
+    # 多段文本的发送间隔 单位: 秒
+    multi-msg-interval: 2
     # 喊话内容 支持一次发送多段文本
     msg:
       - "/chat 服务器qq群: xxxxx"
