@@ -36,6 +36,7 @@ func init() {
 	privateOpCommandMap["joinblacklist"] = opJoinBlackList
 	privateOpCommandMap["deletejoinblacklist"] = opDeletejoinblacklist
 	privateOpCommandMap["blacklist"] = opBlacklist
+	privateOpCommandMap["sensitive"] = opSensitive
 
 	privateQuickCommandMap["help"] = getPrivateHelpInfo
 	privateQuickCommandMap[".help"] = getPrivateHelpInfo
@@ -138,6 +139,19 @@ func opBlacklist(_ *req.MsgData, c *gin.Context, _ string, _ string) {
 		builder.WriteString("\t")
 		builder.WriteString("原因: ")
 		builder.WriteString(value.Reason)
+		builder.WriteString("\n")
+	}
+	resp.ReplyOk(c, builder.String())
+}
+
+func opSensitive(_ *req.MsgData, c *gin.Context, _ string, _ string) {
+	list := dbService.SelectAllSensitive()
+	var builder strings.Builder
+	builder.WriteString("敏感词\n")
+	for index, item := range list {
+		builder.WriteString(strconv.Itoa(index + 1))
+		builder.WriteString(". ")
+		builder.WriteString(item)
 		builder.WriteString("\n")
 	}
 	resp.ReplyOk(c, builder.String())
@@ -253,6 +267,7 @@ func getPrivateHelpInfo(_ *req.MsgData, c *gin.Context, _ string) {
 	builder.WriteString("立即检测黑名单: op=checknow\n")
 	builder.WriteString("清空加群黑名单: op=deletejoinblacklist\n")
 	builder.WriteString("加群黑名单列表: op=joinblacklist\n")
+	builder.WriteString("敏感词列表: op=sensitive\n")
 	builder.WriteString("黑名单列表: op=blacklist")
 	resp.ReplyOk(c, builder.String())
 }

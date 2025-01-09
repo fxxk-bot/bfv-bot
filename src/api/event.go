@@ -173,7 +173,7 @@ func (a *EventApi) Post(c *gin.Context) {
 			value, ok := global.GJoinBlackListMap[msg.UserID]
 			if ok {
 				m["approve"] = false
-				m["reason"] = fmt.Sprintf("黑名单拒绝加群, 原因: %s", value)
+				m["reason"] = fmt.Sprintf("黑名单, 原因: %s", value)
 			} else {
 				match := GroupAnswerReg.FindStringSubmatch(msg.Comment)
 				if len(match) > 1 {
