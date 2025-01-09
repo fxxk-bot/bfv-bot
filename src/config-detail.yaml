@@ -106,15 +106,15 @@ qq-bot:
   # 小电视喊话功能 需要先登录好 临时功能
   bot-bot:
     # 小电视bot的qq号
-    bot-qq: 3889013937
+    bot-qq: 3889363571
     # 喊话间隔 单位: 秒
     interval: 120
     # 多段文本的发送间隔 单位: 秒
     multi-msg-interval: 2
     # 喊话内容 支持单次发送多段文本
     msg:
-      - "/chat 服务器qq群: xxxxx"
-      - "/chat 限杀100, 加群不限"
+      - "服务器qq群: xxxxx"
+      - "限杀100, 加群不限"
   # 是否启用自动绑定GameId 默认不启用
   enable-auto-bind-gameid: false
   # 是否启用自动踢出错误id的群员 默认不启用
