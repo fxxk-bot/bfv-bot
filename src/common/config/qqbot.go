@@ -15,6 +15,7 @@ type QQBot struct {
 	CustomCommandKey                CustomCommandKeyConfig `mapstructure:"custom-command-key" yaml:"custom-command-key"`
 	BotToBot                        BotToBotConfig         `mapstructure:"bot-bot" yaml:"bot-bot"`
 	EnableAutoBindGameId            bool                   `mapstructure:"enable-auto-bind-gameid" yaml:"enable-auto-bind-gameid"`
+	EnableAutoCheckPlayers          bool                   `mapstructure:"enable-auto-check-players" yaml:"enable-auto-check-players"`
 	EnableAutoKickErrorNickname     bool                   `mapstructure:"enable-auto-kick-error-nickname" yaml:"enable-auto-kick-error-nickname"`
 	EnablePlayerlistShowGroupMember bool                   `mapstructure:"enable-playerlist-show-group-member" yaml:"enable-playerlist-show-group-member"`
 	EnableRejectJoinRequest         bool                   `mapstructure:"enable-reject-join-request" yaml:"enable-reject-join-request"`

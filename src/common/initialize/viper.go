@@ -24,5 +24,7 @@ func Viper() *viper.Viper {
 		panic(fmt.Errorf("配置文件读取失败: %s \n", err))
 	}
 
+	global.GConfig.Bfv.Active = global.GConfig.QQBot.EnableAutoCheckPlayers
+
 	return v
 }

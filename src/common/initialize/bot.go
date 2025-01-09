@@ -64,4 +64,8 @@ func InitBot() {
 
 	global.GConfig.QQBot.InitMap()
 	botPrivate.SendPrivateMsg(global.GConfig.QQBot.SuperAdminQq, "服务启动成功\n"+config.GetVersion())
+
+	if global.GConfig.Bfv.Active {
+		botPrivate.SendPrivateMsg(global.GConfig.QQBot.SuperAdminQq, "已自动开启检测功能")
+	}
 }
